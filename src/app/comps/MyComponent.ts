@@ -19,37 +19,37 @@ import { NzModalService } from 'ng-zorro-antd';
 export abstract class MyComponent implements    OnInit {
 
 
-  //当前页码
-  public curPage :number=1;
-  //分页信息
-  public pageInfo:PageInfo;
+ //当前页码
+ public curPage :number=1;
+ //分页信息
+ public pageInfo:PageInfo;
  //缓存的当前列表的map
  public curList = new Array<EvalMgrYear>();
  //修改过的数据的map
  public updateMap = new Map<string,EvalMgrYear>();
-   //修改过的数据的集合
-   public updateList = new Array<EvalMgrYear>();
+ //修改过的数据的集合
+ public updateList = new Array<EvalMgrYear>();
  //对话框是否可见
  public  isUpdataShow=false;
  //是否正在确认
  public isOkLoading = false;
-//已修改的数据的当前页
+ //已修改的数据的当前页
  public updateCurPage=1;
  //数据源
-public dataSource :EvalDataSource;
+ public dataSource :EvalDataSource;
  //搜索的字段
  public  searchFields  =new Map();
-//构造搜索表单
-public validateForm: FormGroup;
-//条件元素列表
-public controlArray = [];
-//是否展开
-public isCollapse = true;
-//职等下拉列表
-public empLevelList=[];
-//排序条件
-public sortValue = null;
-public sortKey = null;
+ //构造搜索表单
+ public validateForm: FormGroup;
+ //条件元素列表
+ public controlArray = [];
+ //是否展开
+ public isCollapse = true;
+ //职等下拉列表
+ public empLevelList=[];
+ //排序条件
+ public sortValue = null;
+ public sortKey = null;
 
  //注入路由信息,以及评价的服务
  constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
