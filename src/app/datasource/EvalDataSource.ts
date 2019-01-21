@@ -9,7 +9,6 @@ import { Result } from "src/app/entity/Result";
 import { PageInfo } from "src/app/entity/PageInfo";
 import { errorHandler } from "@angular/platform-browser/src/browser";
 import { EvalIncludeEmps } from "src/app/entity/EvalEncludeEmps";
-
 export class EvalDataSource implements DataSource<any>{
     
     public evalMgrSubject = new BehaviorSubject<any[]>([]);
