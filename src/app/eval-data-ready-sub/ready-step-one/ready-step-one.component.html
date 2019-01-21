@@ -1,0 +1,64 @@
+<div class="steps-content step-content">
+        
+    <div class="table-operations">
+        <nz-upload
+        nzAction="http://127.0.0.1:8762/eval/postExcel"
+        [nzFileList]="fileList"
+        nzMultiple="false"
+        [nzLimit]="1"
+        nzName="excelFile"
+        nzShowUploadList="false"
+        [nzFilter]="filters"
+        (nzChange)="handleChange($event)">
+        <button nz-button style="margin-bottom:5px">
+          <i nz-icon type="upload"></i><span>上传Excel</span>
+        </button>
+      </nz-upload>
+    </div>
+  
+    <nz-table 
+    #baseTable 
+     nzBordered
+     nzSize="small"
+     [nzLoading]="dataSource.loading$ | async"
+     nzNoResult="无数据"
+     nzShowQuickJumper="true"
+      nzTitle ="评价人员范围"
+      nzFrontPagination="true"
+      [(nzData)]="dataSource.myData"
+      nzPageSize="13"
+    
+     >
+    <thead  >
+    <tr> 
+      <th >#</th>
+      <th nzCustomFilter > 员工编号 <nz-dropdown nzTrigger="click" [nzClickHide]="false" #dropdown>
+          <i nz-icon type="search" theme="outline" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+          <!-- <i nz-icon type="smile-o" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i> -->
+          <div class="custom-filter-dropdown">
+            <input type="text"  style="width:60%" nz-input placeholder="输入员工编号" [(ngModel)]="searchValueCode">
+            <button nz-button   [nzType]="'primary'" (click)="searchUICode()">Search</button>
+          </div>
+        </nz-dropdown> 
+      </th>
+      <th nzCustomFilter > 员工姓名 <nz-dropdown nzTrigger="click" [nzClickHide]="false" #dropdown>
+          <i nz-icon type="search" theme="outline" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i>
+          <!-- <i nz-icon type="smile-o" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i> -->
+          <div class="custom-filter-dropdown">
+            <input type="text"  style="width:60%" nz-input placeholder="输入员工姓名" [(ngModel)]="searchValueName">
+            <button nz-button   [nzType]="'primary'" (click)="searchUIName()">Search</button>
+          </div>
+        </nz-dropdown> 
+      </th>
+      <th > 是否参与评价 </th>
+      
+    </tr>
+    </thead>
+        <tr *ngFor="let data of baseTable.data;let i = index">
+          <td>{{i+1}}</td>
+          <td>{{data.employeeCode}}</td>
+          <td>{{data.employeeName}}</td>
+          <td> {{data.isEnable=='Y'?'是':'否'}} </td>
+        </tr>   
+    </nz-table>
+</div>

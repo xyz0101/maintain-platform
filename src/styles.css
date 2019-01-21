@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; background-color:#f0f2f5;}
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-color:#f0f2f5; }
+.body-content{
+    margin-left:15%;  width:70%;height:auto;
+}
+.step-s{
+    margin-left:2%;  width:96%; padding-top:1%;height:auto; 
+}
+.step-content{
+    margin-left:3%;  width:94%; padding-top:2%; height:auto;
+    padding-bottom:2%; 
+}

@@ -1,0 +1,26 @@
+<div class="ant-card body-content"  >
+  <div class="step-s">
+    <nz-steps [nzCurrent]="current">
+        <nz-step nzTitle="确认人员范围"></nz-step>
+        <nz-step nzTitle="确认线与部门"></nz-step>
+        <nz-step nzTitle="时间节点数据初始化"></nz-step>
+        <nz-step nzTitle="确认部门正职"></nz-step>
+        <nz-step nzTitle="完成"></nz-step>
+      </nz-steps>
+  <router-outlet></router-outlet>
+     
+      <div class="steps-action" style="padding-bottom:4%">
+        <button nz-button nzType="default" (click)="pre()" *ngIf="current > 0">
+          <span>上一步</span>
+        </button>
+        <button nz-button nzType="default" (click)="next()" *ngIf="current < 4">
+          <span>下一步</span>
+        </button>
+        <button nz-button nzType="primary" (click)="done()" *ngIf="current === 4">
+          <span>完成</span>
+        </button>
+      </div>
+
+
+</div>
+</div>
