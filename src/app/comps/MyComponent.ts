@@ -4,8 +4,7 @@ import { EvalServiceService } from 'src/app/eval-service.service';
 import { Params } from '@angular/router/src/shared';
 import { PageInfo } from 'src/app/entity/PageInfo';
 import {MatTableModule} from '@angular/material/table';
-import { EvalMgrYear } from 'src/app/entity/EvalMgrYear';
-import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
+ import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
 import { Observable } from 'rxjs/internal/Observable';
 import { Result } from 'src/app/entity/Result';
 import { AfterViewInit } from '@angular/core';
@@ -14,8 +13,11 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material';
 import { tap } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormGroup,FormBuilder ,FormControl} from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd';
-
+import { NzModalService, NzMessageService, UploadFile, UploadFilter } from 'ng-zorro-antd';
+import { saveAs } from 'file-saver';
+import { ResponseContentType } from '@angular/http';
+import { Observer } from 'rxjs';
+import { DataStatus } from 'src/app/entity/DataStatus';
 export abstract class MyComponent implements    OnInit {
 
 
@@ -24,11 +26,15 @@ export abstract class MyComponent implements    OnInit {
  //分页信息
  public pageInfo:PageInfo;
  //缓存的当前列表的map
- public curList = new Array<EvalMgrYear>();
+ public curList = new Array<any>();
  //修改过的数据的map
- public updateMap = new Map<string,EvalMgrYear>();
+ public updateMap = new Map<string,any>();
  //修改过的数据的集合
- public updateList = new Array<EvalMgrYear>();
+ public updateList =  [];
+ //前端添加的集合
+ public addUIList =  [];
+  //需要向后端删除的集合
+  public deleteList =  [];
  //对话框是否可见
  public  isUpdataShow=false;
  //是否正在确认
@@ -50,10 +56,12 @@ export abstract class MyComponent implements    OnInit {
  //排序条件
  public sortValue = null;
  public sortKey = null;
-
+ public fileList = [];
+ //文件过滤器
+ public filters: UploadFilter[];
  //注入路由信息,以及评价的服务
  constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
-   public modalService: NzModalService) { 
+   public modalService: NzModalService,public msg: NzMessageService) { 
  
  }
 
@@ -95,9 +103,10 @@ initTable(){
    }
    console.log(curPage);
    //置空当前数据集合
-     this.curList=this.curList.filter(d => d.employeeCode ==null);
+     this.curList=this.curList.filter(d => d ==null);
    //加载数据
    this.loadData();
+   console.log("当前集合");
    console.log(this.curList);
  }
  abstract loadData();
@@ -190,7 +199,7 @@ initTable(){
    this.sortKey = sort.key;
    this.sortValue = sort.value;
    //执行查询
-   this.loadEvalByPage(this.dataSource.pageInfo.curPage.toString());
+   this.loadEvalByPage(this.dataSource.dataStatus.pageInfo.curPage.toString());
  
    console.log(this.sortKey+"    "+this.sortValue);
 
@@ -199,29 +208,29 @@ initTable(){
   * 改变数据状态
   * 按照 Angular 的设计，当需要对 nzData 中的数据进行增删时需要使用以下操作，使用 push 或者 splice 修改 nzData 的数据不会生效
   */
- changeStatu(){
-   //console.log(this.dataSource.evalMgrSubject.value)
-   console.log(this.curList)
+  changeStatu(curList:Array<any> , updateMap:Map<string,any>,updateList :Array<any>,dataStatus:DataStatus ):any[] {
    //遍历原始表
-     for(var i=0;i<this.curList.length;i++){
-       var key= this.dataSource.getKey(this.curList[i]);
-      // console.log(this.dataSource.evalMgrSubject.value[i])
-         if(key!=  this.dataSource.getKey(this.dataSource.evalMgrSubject.value[i])){
-           this.updateMap.set(key,this.dataSource.evalMgrSubject.value[i]);
+     for(var i=0;i<curList.length;i++){
+       var key=   JSON.stringify (curList[i]);
+         if(key!=   JSON.stringify (dataStatus.evalMgrSubject.value[i])){
+           updateMap.set(key,dataStatus.evalMgrSubject.value[i]);
          }else{
-           this.updateMap.delete(key);
+           updateMap.delete(key);
          }
      } 
-    // this.updateList.splice(0,this.updateList.length);
-        // 删除数据
-        this.updateList=this.updateList.filter(d => d.employeeCode ==null);
+    // 删除数据
+      updateList=updateList.filter(d => d ==null);
      var i=0;
-     this.updateMap.forEach((value,key)=>{
+     updateMap.forEach((value,key)=>{
    // 增加数据
-       this.updateList[i]=value;
+     updateList[i]=value;
        i++;
      })
-     console.log(this.updateList)
+     console.log("变化的集合")
+     console.log(updateList)
+     console.log(this.addUIList)
+
+     return updateList;
    
  }
  success(): void {
@@ -246,8 +255,91 @@ initTable(){
     this.updateMap.clear();
     this.isUpdataShow = false;
     this.isOkLoading = false;
-    this.loadEvalByPage(this.dataSource.pageInfo.curPage+"")
+    this.loadEvalByPage(this.dataSource.dataStatus.pageInfo.curPage+"")
  }
+ 
 
+ /**
+  * 导出为Excel
+  */
+ downloadExcel(){
+  this.evalService.downLoadExcel() 
+ }
+ handleChange(info: any): void {
+ 
+  // const fileList = info.fileList[info.fileList.length-1];
+  // if (info.file.response) {
+  //   info.file.url = info.file.response.url;
+  // }
+  // console.log(this.fileList )
+  // this.fileList = fileList.filter(item => {
+   
+   
+   
+  // });
+
+  var item = info.fileList[info.fileList.length-1];
+  if (item!=null&&item.status=='done') {
+      
+    this.loadData();
+    this.msg.info("上传成功！")
+    
+  } 
+ 
+}
+/**
+ * 添加行
+ * @param addUIList 
+ * @param dataStatus 
+ * @param row 
+ */
+addUIRow(addUIList:Array<any>,dataStatus: DataStatus,row: any){
+  let i=0;
+  var tempList = []
+  for(;i<dataStatus.myData.length;i++){
+    tempList[i]= dataStatus.myData[i];
+  }
+  tempList[i]=row;
+  dataStatus.myData=tempList;
+  addUIList.push(row);
+  console.log("添加行")
+  console.log(addUIList)
+}
+/**
+ * 删除行
+ * @param deleteList 
+ * @param dataStatus 
+ * @param row 
+ * @param addList 
+ */
+deleteRow(deleteList:Array<any> , dataStatus: DataStatus,row: any,addList:Array<any>):any[]{
+  dataStatus.myData=dataStatus.myData.filter(item=> {
+    return JSON.stringify(item)!=row
+  }
+    
+   )
+  var hasAdd = false;
+  addList.forEach(item=>{
+    if( JSON.stringify(item)==row){
+      console.log("是添加的行")
+      hasAdd=true;
+      
+    }
+  })
+  addList= addList.filter(item=>{
+    return JSON.stringify(item)!=row
+  })
+  if(!hasAdd){
+    let i=0;
+    for(;i<deleteList.length;i++){
+      deleteList[i]= deleteList[i];
+    }
+    deleteList[i]=JSON.parse(row) ;
+  }
+
+  console.log("删除行")
+  console.log(addList)
+return addList;
+}
 
 }

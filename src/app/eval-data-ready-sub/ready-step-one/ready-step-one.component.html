@@ -1,11 +1,11 @@
 <div class="steps-content step-content">
         
     <div class="table-operations">
-        <nz-upload
+        <nz-upload style="float:left"
         nzAction="http://127.0.0.1:8762/eval/postExcel"
         [nzFileList]="fileList"
         nzMultiple="false"
-        [nzLimit]="1"
+         nzLimit ="1"
         nzName="excelFile"
         nzShowUploadList="false"
         [nzFilter]="filters"
@@ -13,19 +13,21 @@
         <button nz-button style="margin-bottom:5px">
           <i nz-icon type="upload"></i><span>上传Excel</span>
         </button>
+       
       </nz-upload>
+      <button nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()" ><i nz-icon type="download"></i>导出Excel</button>
     </div>
   
     <nz-table 
     #baseTable 
      nzBordered
      nzSize="small"
-     [nzLoading]="dataSource.loading$ | async"
+     [nzLoading]="dataSource.dataStatus.loading$ | async"
      nzNoResult="无数据"
      nzShowQuickJumper="true"
       nzTitle ="评价人员范围"
       nzFrontPagination="true"
-      [(nzData)]="dataSource.myData"
+      [(nzData)]="dataSource.dataStatus.myData"
       nzPageSize="13"
     
      >
@@ -37,7 +39,7 @@
           <!-- <i nz-icon type="smile-o" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i> -->
           <div class="custom-filter-dropdown">
             <input type="text"  style="width:60%" nz-input placeholder="输入员工编号" [(ngModel)]="searchValueCode">
-            <button nz-button   [nzType]="'primary'" (click)="searchUICode()">Search</button>
+            <button nz-button   [nzType]="'primary'" (click)="searchUICode()">查询</button>
           </div>
         </nz-dropdown> 
       </th>
@@ -46,7 +48,7 @@
           <!-- <i nz-icon type="smile-o" class="ant-table-filter-icon" [class.ant-table-filter-open]="dropdown.nzVisible" nz-dropdown></i> -->
           <div class="custom-filter-dropdown">
             <input type="text"  style="width:60%" nz-input placeholder="输入员工姓名" [(ngModel)]="searchValueName">
-            <button nz-button   [nzType]="'primary'" (click)="searchUIName()">Search</button>
+            <button nz-button   [nzType]="'primary'" (click)="searchUIName()">查询</button>
           </div>
         </nz-dropdown> 
       </th>

@@ -14,7 +14,7 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material';
 import { tap } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormGroup,FormBuilder ,FormControl} from '@angular/forms';
-import { NzModalService } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { MyComponent } from 'src/app/comps/MyComponent';
 
 @Component({
@@ -27,8 +27,8 @@ export class EvalMaintainComponent extends MyComponent    {
  
   //注入路由信息,以及评价的服务
   constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
-    public modalService: NzModalService) { 
-      super(routerInfo,evalService,fb,modalService)
+    public modalService: NzModalService,public msg: NzMessageService) { 
+      super(routerInfo,evalService,fb,modalService,msg)
   }
  
   ngOnInit() {
@@ -62,5 +62,11 @@ export class EvalMaintainComponent extends MyComponent    {
   this.searchFields.set('mgrName','上级姓名');
  // this.searchFields.set('statu','评价状态');
  // this.searchFields.set('firstSubmit','上级提交状态');
+}
+
+onChange(){
+this.updateList= this.changeStatu(this.curList,this.updateMap,this.updateList,this.dataSource.dataStatus)
+console.log("之后集合")
+  console.log(this.updateList)
 }
 }

@@ -19,8 +19,8 @@ export class ReadyStepOneComponent  extends MyComponent {
   searchValueName = '';
  //注入路由信息,以及评价的服务
  constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
-  public modalService: NzModalService,private msg: NzMessageService) { 
-    super(routerInfo,evalService,fb,modalService)
+  public modalService: NzModalService,public msg: NzMessageService) { 
+    super(routerInfo,evalService,fb,modalService,msg)
 }
 
   ngOnInit() {
@@ -44,36 +44,35 @@ export class ReadyStepOneComponent  extends MyComponent {
  * 搜索编号
  */
 searchUICode(){
-  this.dataSource.myData = this.dataSource.evalMgrSubject.value;
+  this.dataSource.dataStatus.myData = this.dataSource.dataStatus.evalMgrSubject.value;
   const data = new Array();
   var j=0;
-    for(var i=0;i<this.dataSource.myData.length;i++){
-      if(this.dataSource.myData[i].employeeCode.indexOf(this.searchValueCode)!==-1){
-        data[j] =this.dataSource.myData[i];
+    for(var i=0;i<this.dataSource.dataStatus.myData.length;i++){
+      if(this.dataSource.dataStatus.myData[i].employeeCode.indexOf(this.searchValueCode)!==-1){
+        data[j] =this.dataSource.dataStatus.myData[i];
         j++;
       }
     }
-  this.dataSource.myData = data;
+  this.dataSource.dataStatus.myData = data;
    }
    /**
  * 搜索姓名
  */
 searchUIName(){
-  this.dataSource.myData = this.dataSource.evalMgrSubject.value;
+  this.dataSource.dataStatus.myData = this.dataSource.dataStatus.evalMgrSubject.value;
   const data = new Array();
   var j=0;
-    for(var i=0;i<this.dataSource.myData.length;i++){
-      if(this.dataSource.myData[i].employeeName.indexOf(this.searchValueName)!==-1){
-        data[j] =this.dataSource.myData[i];
+    for(var i=0;i<this.dataSource.dataStatus.myData.length;i++){
+      if(this.dataSource.dataStatus.myData[i].employeeName.indexOf(this.searchValueName)!==-1){
+        data[j] =this.dataSource.dataStatus.myData[i];
         j++;
       }
     }
-  this.dataSource.myData = data;
+  this.dataSource.dataStatus.myData = data;
    }
- 
-/*************************文件操作**********************************/ 
+ /*************************文件操作**********************************/ 
 
-filters: UploadFilter[] = [
+ filters = [
   {
     name: 'type',
     fn  : (fileList: UploadFile[]) => {
@@ -101,7 +100,6 @@ filters: UploadFilter[] = [
     name: 'async',
     fn: (fileList: UploadFile[]) => {
       return new Observable((observer: Observer<UploadFile[]>) => {
-        // doing
         observer.next(fileList);
         observer.complete();
       });
@@ -109,24 +107,8 @@ filters: UploadFilter[] = [
   }
 ];
 
-fileList = [];
-
-// tslint:disable-next-line:no-any
-handleChange(info: any): void {
-  const fileList = info.fileList;
-  // 2. read from response and show file link
-  if (info.file.response) {
-    info.file.url = info.file.response.url;
-  }
-  // 3. filter successfully uploaded files according to response from server
-  this.fileList = fileList.filter(item => {
-    if (item.response) {
 
 
-      return item.response.status === 'success';
-    }
-    return true;
-  });
-}
+
 
 }

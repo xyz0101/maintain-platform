@@ -10,6 +10,16 @@ export class EvalMgrYear{
       evalYear:string;
       levelFirst:string;
       isUnSubmit:boolean;
-    
+      constructor(){
+
+      }
+      public  getKey(value:any) : string{
+   
+            return value.employeeCode+""+value.employeeLevel+""+
+            value.employeeName+""+value.mgrCode+""+
+            value.mgrName+""+value.orgFullName+""+
+            value.statu+""+value.firstSubmit+""+
+            value.evalYear+""+value.levelFirst+""+value.isUnSubmit+"";
+       }
 
 }

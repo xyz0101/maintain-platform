@@ -58,12 +58,12 @@
  nzShowQuickJumper="true"
   nzTitle ="年度评价一次评价表"
 [nzFrontPagination]="false" 
-[(nzData)]="dataSource.evalMgrSubject.value"
-[nzLoading]="dataSource.loading$ | async"
-[nzTotal]="dataSource.pageInfo.totalNum"
-[(nzPageIndex)]="dataSource.pageInfo.curPage"
-[(nzPageSize)]="dataSource.pageInfo.pageSize"
-(nzPageIndexChange)="loadEvalByPage(dataSource.pageInfo.curPage)"
+[(nzData)]="dataSource.dataStatus.evalMgrSubject.value"
+[nzLoading]="dataSource.dataStatus.loading$ | async"
+[nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
+[(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
+[(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize"
+(nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage)"
  >
 <thead  (nzSortChange)="sort($event)" nzSingleSort>
 <tr> 
@@ -78,11 +78,11 @@
   <th   > 上级姓名 </th>
   <th  nzShowSort nzSortKey="statu" > 评价状态 </th>
   <th style="height:40px;width:100px" >操作 
-     <button *ngIf="updateMap.size>0" style="margin-left:5px"   nzSize ="small" (click)="showUpdateDialog()" nz-button nzType="primary"> 
+     <button *ngIf="updateList.length>0" style="margin-left:5px"   nzSize ="small" (click)="showUpdateDialog()" nz-button nzType="primary"> 
         <i  nz-icon type="check"     ></i> </button>  </th>
 </tr>
 </thead>
-    <tr *ngFor="let data of dataSource.evalMgrSubject.value;let i = index">
+    <tr *ngFor="let data of dataSource.dataStatus.evalMgrSubject.value;let i = index">
       <td>{{i+1}}</td>
       <td>{{data.evalYear}}</td>
       <td> {{data.employeeCode}} </td>
@@ -93,7 +93,7 @@
       <td>{{data.mgrCode}}</td>
       <td>{{data.mgrName}}</td>
       <td>{{data.statu}}</td>
-      <td>  <nz-switch   (click)="changeStatu()"  [(ngModel)]="data.isUnSubmit" nzCheckedChildren="未提交" nzUnCheckedChildren="已提交"></nz-switch>    </td>
+      <td>  <nz-switch   (click)="onChange()"  [(ngModel)]="data.isUnSubmit" nzCheckedChildren="未提交" nzUnCheckedChildren="已提交"></nz-switch>    </td>
       
     </tr>   
 </nz-table>
