@@ -1,0 +1,77 @@
+<div class="ant-card" style=" width:100%">
+  <div style="width:96%;margin-left:2%;padding-top:1%">
+    <form nz-form [formGroup]="validateForm" class="ant-advanced-search-form" (ngSubmit)="searchEvalEmployeeInfos()">
+      <div nz-row [nzGutter]="24">
+        <div *ngFor="let control of controlArray">
+        <div nz-col [nzSpan]="control.field=='dataDate'?24:8"  [style.display]="control.show?'block':'none'">
+            <nz-form-item *ngIf="control.field=='dataDate'" nzFlex style="float:left;margin-left:1%">
+                <nz-form-label nzRequired="true" [nzFor]="control.field"> {{control.val}}</nz-form-label>
+                <nz-form-control>
+                    <nz-date-picker   [formControlName]="control.field" [attr.id]="control.field"   nzFormat="yyyy-MM-dd"></nz-date-picker>
+                    <nz-form-explain *ngIf="validateForm.get('dataDate').dirty && validateForm.get('dataDate').errors">必须指定一个时间节点</nz-form-explain>
+                 </nz-form-control>
+              </nz-form-item>
+         
+          <nz-form-item *ngIf="control.field!='dataDate'" nzFlex style="float:right;margin-right:30%">
+            <nz-form-label [nzFor]="control.field"> {{control.val}}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="{{control.val}}" [formControlName]="control.field" [attr.id]="control.field">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </div>
+      </div>
+      <div nz-row>
+          <nz-form-item>
+              <nz-form-control >
+        <div nz-col [nzSpan]="24" style="text-align: right;">
+          <button style="margin-left:15px" nz-button [nzType]="'primary'"  >搜索</button>
+
+          <button style="margin-left:15px" nz-button (click)="resetForm()">重置</button>
+          <!-- <a style="margin-left:15px;font-size:15px;color:blue" (click)="toggleCollapse()">
+            {{isCollapse?'展开':'收起'}}
+            <i nz-icon style="vertical-align:0em" [type]="isCollapse?'down':'up'"></i>
+          </a> -->
+        </div> 
+        </nz-form-control>
+        </nz-form-item>
+      </div>
+    </form>
+
+  </div>
+
+
+  <div style=" padding-bottom:5%">
+      <!-- (validateForm.get('dataDate').dirty &&
+      validateForm.get('dataDate').errors)==true?
+      '必须指定一个时间节点才能开始同步数据！':'在这之后将会开始刷新数据，这将会耗时大约3分钟，是否继续？'  -->
+      <nz-popconfirm [nzTitle]="validateForm.value.dataDate==null?'必须指定一个时间节点才能开始同步数据！': '在这之后将会开始刷新 '+(validateForm.value.dataDate|date:'yyyy/MM/dd')+ ' 的数据，这将会耗时大约3分钟，是否继续？'" (nzOnConfirm)="refreshData()">
+      <button *ngIf="showRefresh"   [nzType]="'primary'"   nz-button  nz-popconfirm style="margin-bottom:5px"  >刷新数据</button>
+      </nz-popconfirm>
+      <nz-progress  *ngIf="showProcess" [(nzPercent)]="processRate"></nz-progress>
+    <nz-table #ajaxTable nzBordered nzSize="small" nzNoResult="无数据" nzShowQuickJumper="true" nzTitle="年度评价人员信息表" [nzFrontPagination]="false"
+      [(nzData)]="dataSource.dataStatus.myData" [nzLoading]="dataSource.dataStatus.loading$ | async" [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
+      [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage" [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize" (nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage)">
+      <thead (nzSortChange)="sort($event)" nzSingleSort>
+        <tr>
+          <th>#</th>
+          <th> 时间节点 </th>
+          <th> 员工编号 </th>
+          <th> 员工姓名 </th>
+          <th > 所属部门 </th>
+          <th> 岗位名称 </th>
+           
+        </tr>
+      </thead>
+      <tr *ngFor="let data of dataSource.dataStatus.myData;let i = index">
+        <td>{{i+1}}</td>
+        <td>{{data.dataDate| date:'yyyy/MM/dd'}}</td>
+        <td> {{data.employeeCode}} </td>
+        <td>{{data.employeeName}}</td>
+        <td>{{data.orgNameSecond}}</td>
+        <td >{{data.positionName}}</td>
+      </tr>
+    </nz-table>
+
+  </div>
+</div>

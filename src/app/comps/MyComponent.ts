@@ -18,6 +18,7 @@ import { saveAs } from 'file-saver';
 import { ResponseContentType } from '@angular/http';
 import { Observer } from 'rxjs';
 import { DataStatus } from 'src/app/entity/DataStatus';
+import { async } from '@angular/core/testing';
 export abstract class MyComponent implements    OnInit {
 
 
@@ -47,12 +48,17 @@ export abstract class MyComponent implements    OnInit {
  public  searchFields  =new Map();
  //构造搜索表单
  public validateForm: FormGroup;
+ //搜索条件json串
+ public searchJson="{'null':null}";
  //条件元素列表
  public controlArray = [];
  //是否展开
  public isCollapse = true;
  //职等下拉列表
  public empLevelList=[];
+ //搜索条件默认展示多少个 ，默认值3
+ public searchFieldsLimitForRow =3;
+
  //排序条件
  public sortValue = null;
  public sortKey = null;
@@ -64,6 +70,10 @@ export abstract class MyComponent implements    OnInit {
    public modalService: NzModalService,public msg: NzMessageService) { 
  
  }
+ public setSearchFieldsLimitForRow(value:number){
+   this.searchFieldsLimitForRow =value;
+ }
+
 
  abstract ngOnInit();
 
@@ -126,11 +136,11 @@ initTable(){
    //处理确认
   this.evalService.updateEval(JSON.stringify(this.updateList)).subscribe( 
    val => { 
-         this.success();
+         this.success(null);
          this.completedUpdate();
    },
    response => {
-         this.error();
+         this.error(null);
          this.completedUpdate();
    } 
  );
@@ -151,14 +161,14 @@ initTable(){
  toggleCollapse(): void {
    this.isCollapse = !this.isCollapse;
    this.controlArray.forEach((c, index) => {
-     c.show = this.isCollapse ? (index < 3) : true;
+     c.show = this.isCollapse ? (index < this.searchFieldsLimitForRow) : true;
    });
  }
  /**
   * 重置表单
   */
  resetForm(): void {
-   this.validateForm.reset();
+    this.validateForm.reset();
  }
  /**
   * 构建搜索表单
@@ -167,11 +177,12 @@ initTable(){
    this.validateForm = this.fb.group({});
    var i=0;
    this.searchFields.forEach((value , key) =>{
-     this.controlArray.push({ index: i, show: i < 3 ,val:value,field:key});
+     this.controlArray.push({ index: i, show: i < this.searchFieldsLimitForRow ,val:value,field:key});
      this.validateForm.addControl(key, new FormControl());
      i++;
    });   
  }
+ 
  /**
   * 初始化职等下拉列表
   */
@@ -209,41 +220,63 @@ initTable(){
   * 按照 Angular 的设计，当需要对 nzData 中的数据进行增删时需要使用以下操作，使用 push 或者 splice 修改 nzData 的数据不会生效
   */
   changeStatu(curList:Array<any> , updateMap:Map<string,any>,updateList :Array<any>,dataStatus:DataStatus ):any[] {
-   //遍历原始表
+    //需要添加延迟，在使用ngModelChange的时候变化时发生在改变数据的同时，在执行这里的饿时候数据还没有变化，所以要等待数据变化之后在比较
+    window.setTimeout(() => {
+    // console.log(curList)
+    // console.log(dataStatus.myData )
+    //遍历原始表
      for(var i=0;i<curList.length;i++){
        var key=   JSON.stringify (curList[i]);
-         if(key!=   JSON.stringify (dataStatus.evalMgrSubject.value[i])){
-           updateMap.set(key,dataStatus.evalMgrSubject.value[i]);
+      //  console.log("key====》",curList[i])
+      //  console.log("value====》", dataStatus.myData[i] )
+         if(key!=   JSON.stringify (dataStatus.myData[i])){
+           if(dataStatus.myData[i]!=undefined){
+            //  console.log("发生了变化")
+            //  console.log("key====》"+key)
+            //  console.log("value====》"+JSON.stringify (dataStatus.myData[i]))
+             updateMap.set(key,dataStatus.myData[i]);
+           }
+           
          }else{
-           updateMap.delete(key);
+          // console.log("变化复原")
+          //console.log("key====》"+key)
+            updateMap.delete(key);
          }
      } 
     // 删除数据
-      updateList=updateList.filter(d => d ==null);
+      updateList=updateList.filter(d => d ==null );
      var i=0;
      updateMap.forEach((value,key)=>{
-   // 增加数据
-     updateList[i]=value;
-       i++;
+    // 增加数据
+    if(value!=null&&value!=undefined){
+      updateList[i]=value;
+        i++;
+    }
+     
      })
      console.log("变化的集合")
      console.log(updateList)
      console.log(this.addUIList)
+     console.log(this.updateMap)
+     this.updateList=updateList;
 
+
+    }, 50);
+    console.log("延迟完成")
      return updateList;
    
  }
- success(): void {
+ success(txt): void {
    this.modalService.success({
      nzTitle: '提示信息',
-     nzContent: '修改信息成功'
+     nzContent: txt==null? '修改信息成功':txt
    });
  }
-
- error(): void {
+ 
+ error(txt): void {
    this.modalService.error({
      nzTitle: '错误信息',
-     nzContent: '修改信息失败'
+     nzContent: txt==null?'修改信息失败':txt
    });
  }
  /**
@@ -259,24 +292,9 @@ initTable(){
  }
  
 
- /**
-  * 导出为Excel
-  */
- downloadExcel(){
-  this.evalService.downLoadExcel() 
- }
+
  handleChange(info: any): void {
  
-  // const fileList = info.fileList[info.fileList.length-1];
-  // if (info.file.response) {
-  //   info.file.url = info.file.response.url;
-  // }
-  // console.log(this.fileList )
-  // this.fileList = fileList.filter(item => {
-   
-   
-   
-  // });
 
   var item = info.fileList[info.fileList.length-1];
   if (item!=null&&item.status=='done') {
@@ -314,6 +332,8 @@ addUIRow(addUIList:Array<any>,dataStatus: DataStatus,row: any){
  */
 deleteRow(deleteList:Array<any> , dataStatus: DataStatus,row: any,addList:Array<any>):any[]{
   dataStatus.myData=dataStatus.myData.filter(item=> {
+    new Date( item.creationDate) 
+    
     return JSON.stringify(item)!=row
   }
     
@@ -334,6 +354,7 @@ deleteRow(deleteList:Array<any> , dataStatus: DataStatus,row: any,addList:Array<
     for(;i<deleteList.length;i++){
       deleteList[i]= deleteList[i];
     }
+    
     deleteList[i]=JSON.parse(row) ;
   }
 
@@ -341,5 +362,10 @@ deleteRow(deleteList:Array<any> , dataStatus: DataStatus,row: any,addList:Array<
   console.log(addList)
 return addList;
 }
-
+/**
+ * 获取搜索的条件
+ */
+getSearchJson():string{
+ return JSON.stringify((this.validateForm==undefined||this.validateForm==null) ? {'null':null}: this.validateForm.value) ;
+}
 }

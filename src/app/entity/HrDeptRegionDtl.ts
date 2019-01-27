@@ -1,4 +1,5 @@
 export class HrDeptRegionDtl{
+    dtlId :number;
      drCode:string;
     drName:string;
    orgNameSecond:string;
@@ -9,4 +10,5 @@ export class HrDeptRegionDtl{
    orgCodeSecond:string;
    creationDate:Date;
    edate:Date;
+   isAdded:boolean;
 }

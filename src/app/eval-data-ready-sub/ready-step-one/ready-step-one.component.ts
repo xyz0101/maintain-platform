@@ -71,7 +71,13 @@ searchUIName(){
   this.dataSource.dataStatus.myData = data;
    }
  /*************************文件操作**********************************/ 
-
+ /**
+  * 导出为Excel
+  */
+  downloadExcel(){
+    this.evalService.downLoadExcel() 
+   }
+   
  filters = [
   {
     name: 'type',

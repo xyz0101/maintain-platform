@@ -1,6 +1,7 @@
 <div class="steps-content step-content">
     <div class="table-operations">
  <button nz-button style="margin-bottom:5px" (click)="addRow()" class="editable-add-btn">添加</button>
+ <button nz-button style="margin-bottom:5px;margin-left:88%" (click)="saveDeptRegion()" class="editable-add-btn">保存</button>
  </div>
     <nz-table 
     #editRowTable 
@@ -40,16 +41,49 @@
         </tr>   
     </nz-table>
     <nz-divider></nz-divider>
+
     <div class="steps-content step-content">
-        <div class="table-operations">
-     <button style="margin-bottom:5px" nz-button (click)="addRow1()" class="editable-add-btn">添加</button>
-     </div>
+        <div class="table-operations"   >
+    
+     <form  nz-form  [nzLayout]="'inline'" [formGroup]="validateForm"   >
+        <nz-form-item>
+        <nz-form-control>
+            <button     nz-button (click)="addRow1()"  >添加</button>
+        </nz-form-control>
+        </nz-form-item>
+ <button     nz-button (click)="addRow1()"  >添加</button>
+        <nz-form-item     *ngFor="let control of controlArray"   >
+        <nz-form-control>
+            <nz-date-picker [nzDisabled]="showReSet"    [formControlName]="control.field" [attr.id]="control.field"  nzFormat="yyyy-MM-dd"></nz-date-picker>
+        </nz-form-control>
+        </nz-form-item>
+     
+      <nz-form-item>
+      <nz-form-control>
+    <button   *ngIf="showSearch" nz-button nzType="primary"   (click)="searchDtl()"  nzSearch>搜索</button>
+    </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+    <nz-popconfirm [nzTitle]="'重置之后将会清空之前未保存的修改，确认继续？'" (nzOnConfirm)="reSetDate()">
+    <button  *ngIf="showReSet" nz-button nzType="primary"  nz-popconfirm  nzSearch>重置</button>
+    </nz-popconfirm>
+    </nz-form-control>
+    </nz-form-item>
+      <nz-form-item style="margin-left:61% " >
+        <nz-form-control>
+    <button nz-button (click)="saveDeptRegionDtl()" class="editable-add-btn">保存</button>
+  </nz-form-control>
+</nz-form-item>
+    </form>
+  
+    </div>
     <nz-table 
     #baseTable 
      nzBordered
      nzSize="small"
      [nzLoading]="dataSource.dataStatus1.loading$ | async"
-     nzNoResult="无数据"
+     nzNoResult="无数据,请选择正确的时间节点"
      nzShowQuickJumper="true"
       nzTitle ="线与部门的关系"
       nzFrontPagination="true"
@@ -60,7 +94,7 @@
     <thead>
     <tr> 
       <th>#</th>
-      <th> 线编号</th>
+      <!-- <th> 线编号</th> -->
       <th> 线名称</th>
       <th> 开始时间</th>
       <th> 结束时间</th>
@@ -70,13 +104,24 @@
     </thead>
         <tr *ngFor="let data of baseTable.data;let i = index">
           <td>{{i+1}}</td>
-          <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drCode" >  </td>
-          <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drName" >  </td>
-          <td>{{ data.bdate | date:'yyyy/MM/dd'}}</td>
-          <td>{{ data.edate | date:'yyyy/MM/dd'}}</td>
-          <td>{{data.orgNameSecond}}</td>
+          <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drCode" >  </td> -->
+          <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drName" >  </td> -->
+         <td style="width:200px"> <nz-select (ngModelChange)="onChange1()" style="width:100%"[(ngModel)]="data.drCode"  nzAllowClear nzPlaceHolder="Choose">
+              <nz-option *ngFor="let sel of dataSource.dataStatus.myData" [nzValue]="sel.drCode"  [nzLabel]="sel.drName" [nzDisabled]="sel.isAdded==true?true:false"></nz-option>
+            </nz-select>
+          </td>
+          <td style="width:200px">  <nz-date-picker style="width:100%"  [(ngModel)]="data.bdate"  (ngModelChange)="onChange1()"  nzFormat="yyyy-MM-dd"></nz-date-picker></td> 
+          <td style="width:200px"> <nz-date-picker  style="width:100%" [(ngModel)]="data.edate"  (ngModelChange)="onChange1()"  nzFormat="yyyy-MM-dd"></nz-date-picker></td>
+          <!-- <td>{{ data.bdate | date:'yyyy/MM/dd'}}</td> -->
+          <!-- <td>{{ data.edate | date:'yyyy/MM/dd'}}</td> -->
           <td>
-              <nz-popconfirm [nzTitle]="'确认删除?'" (nzOnConfirm)="deleteUIRow1(data)">
+          <nz-select style="width:100%"[(ngModel)]="data.orgCodeSecond" (ngModelChange)="onChange1()"  nzAllowClear nzPlaceHolder="请选择部门">
+              <nz-option *ngFor="let sel of dataSource.dataStatus2.myData" [nzValue]="sel.organizationCode" [nzLabel]="sel.organizationName"   ></nz-option>
+            </nz-select>
+            </td>
+          <!-- <td>{{data.orgCodeSecond}}</td> -->
+          <td>
+              <nz-popconfirm  *ngIf="data.isAdded" [nzTitle]="'确认删除?'" (nzOnConfirm)="deleteUIRow1(data)">
                 <a nz-popconfirm>删除</a>
               </nz-popconfirm>
             </td>

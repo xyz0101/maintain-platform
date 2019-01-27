@@ -38,9 +38,7 @@ export class EvalMaintainComponent extends MyComponent    {
     this.initEmpLevelList();
     //初始化数据表
     super.initTable();
-    //设置分页信息
-   // this.customPaginator();
-   // console.log(this.paginatorIntl )
+  
   }
   /**
    * 加载数据方法

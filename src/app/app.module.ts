@@ -25,15 +25,24 @@ import zh from '@angular/common/locales/zh';
 import { EvalDataReadyComponent } from './eval-data-ready/eval-data-ready.component';
 import { ReadyStepSecondComponent } from './eval-data-ready-sub/ready-step-second/ready-step-second.component';
 import { ReadyStepOneComponent } from './eval-data-ready-sub/ready-step-one/ready-step-one.component';
-  
+import { ReadyStepThirdComponent } from './eval-data-ready-sub/ready-step-third/ready-step-third.component';
+import { RouterGuard } from 'src/app/guard/RouterGuard';
+import { ReadyStepFourthComponent } from './eval-data-ready-sub/ready-step-fourth/ready-step-fourth.component';
+import { ReadyStepFifthComponent } from './eval-data-ready-sub/ready-step-fifth/ready-step-fifth.component';
+    
 registerLocaleData(en);
  const routerConfig:Routes=[
   {path:'home',component:EvalMaintainComponent},
   {path:'evaluate/first/:curPage',component:EvalMaintainComponent},
   {path:'evaluate/ready',component:EvalDataReadyComponent,children:[
-    {path:'',component:ReadyStepOneComponent  },
-    {path:'stepsecond',component:ReadyStepSecondComponent  }
-  ]}
+    {path:'',component:ReadyStepOneComponent ,canDeactivate:[RouterGuard] },
+    {path:'stepsecond',component:ReadyStepSecondComponent ,canDeactivate:[RouterGuard] },
+    {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard] },
+    {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] },
+    {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] }
+    
+    
+  ],canDeactivate:[RouterGuard]}
 ]
 @NgModule({
   declarations: [
@@ -44,8 +53,11 @@ registerLocaleData(en);
     EvalMaintainComponent,
     EvalDataReadyComponent,
     ReadyStepSecondComponent,
-    ReadyStepOneComponent
-  ],
+    ReadyStepOneComponent,
+    ReadyStepThirdComponent,
+    ReadyStepFourthComponent,
+    ReadyStepFifthComponent 
+   ],
   imports: [
     BrowserModule,
      AppRoutingModule,
@@ -66,7 +78,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     NgZorroAntdModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN }],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN },RouterGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

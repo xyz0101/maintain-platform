@@ -58,7 +58,7 @@
  nzShowQuickJumper="true"
   nzTitle ="年度评价一次评价表"
 [nzFrontPagination]="false" 
-[(nzData)]="dataSource.dataStatus.evalMgrSubject.value"
+[(nzData)]="dataSource.dataStatus.myData"
 [nzLoading]="dataSource.dataStatus.loading$ | async"
 [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
 [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
@@ -82,7 +82,7 @@
         <i  nz-icon type="check"     ></i> </button>  </th>
 </tr>
 </thead>
-    <tr *ngFor="let data of dataSource.dataStatus.evalMgrSubject.value;let i = index">
+    <tr *ngFor="let data of dataSource.dataStatus.myData;let i = index">
       <td>{{i+1}}</td>
       <td>{{data.evalYear}}</td>
       <td> {{data.employeeCode}} </td>

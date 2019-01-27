@@ -1,0 +1,117 @@
+<div class="steps-content step-content">
+
+  <div class="table-operations">
+   
+      
+    <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
+      <nz-form-item *ngIf="validateForm!=undefined &&validateForm!=null&&validateForm.value!=null&&validateForm.value.date!=null " >
+          <nz-form-control>
+            <nz-upload   [nzAction]="uploadDistQuotaUrl" [nzFileList]="fileList" nzMultiple="false"
+              nzLimit="1" nzName="excelFile" nzShowUploadList="false" [nzFilter]="filters" (nzChange)="handleChange($event)">
+              <button nz-button style="margin-bottom:5px;">
+                <i nz-icon type="upload"></i>
+                <span>上传Excel</span>
+              </button>
+            </nz-upload>
+          </nz-form-control>
+        </nz-form-item>
+      <nz-form-item *ngFor="let control of controlArray">
+        <nz-form-control>
+          <nz-date-picker [nzDisabled]="showReSet" [formControlName]="control.field" [attr.id]="control.field" (ngModelChange)="dateChange($event)" nzFormat="yyyy-MM-dd"></nz-date-picker>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+          <button *ngIf="showSearch" nz-button nzType="primary" (click)="searchQuota()" nzSearch>搜索</button>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <nz-popconfirm [nzTitle]="'重置之后将会清空之前未保存的修改，确认继续？'" (nzOnConfirm)="reSetDate()">
+            <button *ngIf="showReSet" nz-button nzType="primary" nz-popconfirm nzSearch>重置</button>
+          </nz-popconfirm>
+        </nz-form-control>
+      </nz-form-item>
+
+  
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()">
+            <i nz-icon type="download"></i>导出Excel</button>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item style="margin-left:40% ">
+        <nz-form-control>
+          <button nz-button (click)="saveEvalDistQuota()" class="editable-add-btn">保存</button>
+        </nz-form-control>
+       </nz-form-item>
+
+
+    </form>
+
+  </div>
+  <nz-table #baseTable nzBordered nzSize="small" [nzLoading]="dataSource.dataStatus.loading$ | async" nzNoResult="无数据,请选择正确的年份"
+    nzShowQuickJumper="true" nzTitle="评语分布率调整" nzFrontPagination="true" [(nzData)]="dataSource.dataStatus.myData" nzPageSize="13">
+    <thead>
+      <tr>
+        <th>#</th>
+        <!-- <th> 线编号</th> -->
+        <th> 线名称</th>
+        <th> 部门</th>
+        <th> 等级</th>
+        <th> S指标</th>
+        <th> A指标</th>
+        <th> B指标</th>
+        <th> C指标</th>
+        <th> D指标</th>
+      </tr>
+    </thead>
+    <tr *ngFor="let data of baseTable.data;let i = index">
+      <td>{{i+1}}</td>
+      <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drCode" >  </td> -->
+      <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drName" >  </td> -->
+      <td style="width:200px">
+        <nz-select nzDisabled (ngModelChange)="onChange()" style="width:100%" [(ngModel)]="data.drCode" nzAllowClear nzPlaceHolder="Choose">
+          <nz-option *ngFor="let sel of dataSource.dataStatus.pageDate.selectLists.deptRegionList" [nzValue]="sel.drCode" [nzLabel]="sel.drName"
+            [nzDisabled]="sel.isAdded==true?true:false"></nz-option>
+        </nz-select>
+      </td>
+      <td>
+        <nz-select nzDisabled style="width:200px" [(ngModel)]="data.deptNo" (ngModelChange)="onChange()" nzAllowClear nzPlaceHolder="请选择部门">
+          <nz-option *ngFor="let sel of dataSource.dataStatus.pageDate.selectLists.orgList" [nzValue]="sel.organizationCode" [nzLabel]="sel.organizationName"></nz-option>
+        </nz-select>
+      </td>
+      <td>
+        <nz-select nzDisabled style="width:100px" [(ngModel)]="data.jobLevel" (ngModelChange)="onChange()" nzAllowClear nzPlaceHolder="请选择等级">
+          <nz-option *ngFor="let sel of jobLevelArray" [nzValue]="sel.jobLevel" [nzLabel]="sel.jobLevelName"></nz-option>
+        </nz-select>
+      </td>
+      <td style="width:200px">
+        <nz-input-number [nzMin]="0" [nzMax]="200" [nzStep]="1" nzSize="default" (ngModelChange)="onChange()"  [(ngModel)]="data.sResult"></nz-input-number>
+      </td>
+      <td style="width:200px">
+        <nz-input-number [nzMin]="0" [nzMax]="200" [nzStep]="1" nzSize="default" (ngModelChange)="onChange()" [(ngModel)]="data.aResult"></nz-input-number>
+      </td>
+      <td style="width:200px">
+        <nz-input-number [nzMin]="0" [nzMax]="200" [nzStep]="1"  nzSize="default" (ngModelChange)="onChange()" [(ngModel)]="data.bResult"></nz-input-number>
+      </td>
+      <td style="width:200px">
+        <nz-input-number [nzMin]="0" [nzMax]="200" [nzStep]="1"  nzSize="default" (ngModelChange)="onChange()" [(ngModel)]="data.cResult"></nz-input-number>
+      </td>
+      <td style="width:200px">
+        <nz-input-number [nzMin]="0" [nzMax]="200" [nzStep]="1"  nzSize="default" (ngModelChange)="onChange()" [(ngModel)]="data.dResult"></nz-input-number>
+      </td>
+
+
+    </tr>
+  </nz-table>
+
+
+
+
+
+
+
+</div>

@@ -9,4 +9,5 @@ export class HrDeptRegion{
          drMgr: string;
          drMgrName: string;
          creationDate :Date;
+         isAdded:boolean;
 }
