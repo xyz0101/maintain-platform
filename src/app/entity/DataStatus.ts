@@ -7,6 +7,7 @@ import { PageData } from "src/app/entity/PageData";
 export class DataStatus{
     public evalMgrSubject = new BehaviorSubject<any[]>([]);
     public myData = new Array<any>();
+    public anyData ;
     public loadingEvalSubject = new BehaviorSubject<boolean>(false);
     public pageInfo = new PageInfo();
     public pageDate = new PageData();

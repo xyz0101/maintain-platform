@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { MyComponent } from 'src/app/comps/MyComponent';
 import { ActivatedRoute } from '@angular/router';
-import { NzModalService, NzMessageService, UploadFile } from 'ng-zorro-antd';
-import { EvalServiceService } from 'src/app/eval-service.service';
+import { NzModalService, NzMessageService, UploadFile, UploadXHRArgs } from 'ng-zorro-antd';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { DatePipe } from '@angular/common';
 import { FormBuilder } from '@angular/forms';
 import zh from '@angular/common/locales/zh';
 import { Observable, Observer } from 'rxjs';
 import { EventEmitter } from 'events';
+import { HttpEventType } from '@angular/common/http';
+import { HttpEvent } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
 @Component({
   selector: 'app-ready-step-third',
   templateUrl: './ready-step-third.component.html',
@@ -15,12 +19,20 @@ import { EventEmitter } from 'events';
 })
 export class ReadyStepThirdComponent  extends MyComponent {
   
+   //注入路由信息,以及评价的服务
+ constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
+  public modalService: NzModalService,public msg: NzMessageService,private datePipe: DatePipe) { 
+    super(routerInfo,evalService,fb,modalService,msg)
+}
+
+
   loadData() {
      this.dataSource.loadEvalDistQuota(  this.getSearchJson() ,this.updateMap,this.updateList)
   }
   initSearchFields() {
-    this.searchFields.set('date','日期指定');
+    this.searchFields.set('dataDate','日期指定');
   }
+  
 
 private jobLevelArray=[
   {jobLevel:'1',jobLevelName:'1'},
@@ -30,18 +42,16 @@ private jobLevelArray=[
   {jobLevel:'5',jobLevelName:'5'},
   
 ]
+
 //是否显示重置
 public showReSet = false;
 //是否显示搜索
 public showSearch = true;
-private uploadDistQuotaUrl="http://127.0.0.1:8762/eval/postExcelEvalDistQuota?year=null";
- //注入路由信息,以及评价的服务
- constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
-  public modalService: NzModalService,public msg: NzMessageService,private datePipe: DatePipe) { 
-    super(routerInfo,evalService,fb,modalService,msg)
-}
+//上传评语分布率
+public uploadDistQuotaUrl=this.evalService.uploadDistQuotaUrl;
+
   ngOnInit() {
-    this.initTable();
+    this.initTable(new EvalDataSource(this.evalService));
     super.initSearch();
     
   }
@@ -96,43 +106,24 @@ private uploadDistQuotaUrl="http://127.0.0.1:8762/eval/postExcelEvalDistQuota?ye
     } 
    
   }
-   /**
-    * 文件过滤器
-    */
-   filters = [
-    {
-      name: 'type',
-      fn  : (fileList: UploadFile[]) => {
-    
-        const filterFiles =[];
-        var i=0;
-        fileList.forEach((vaule:UploadFile,index :number)=>{
-          console.log(vaule.type)
-          console.log('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.indexOf(vaule.type))
-          if(vaule.type!=null&&vaule.type!=''&& ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.indexOf(vaule.type)>-1 ||
-          'application/vnd.ms-excel'.indexOf(vaule.type)>-1 )){
-           
-            filterFiles[i]=vaule;
-            i++;
-          }
-        })
-      if (filterFiles.length !== fileList.length) {
-         this.msg.error(`包含文件格式不正确，只允许上传Excel表格`);
-         return filterFiles;
-       }
-        return fileList;
-      }
-    },
-    {
-      name: 'async',
-      fn: (fileList: UploadFile[]) => {
-        return new Observable((observer: Observer<UploadFile[]>) => {
-          observer.next(fileList);
-          observer.complete();
-        });
-      }
-    }
-  ];
+  /**
+   * 上传成功
+   */
+  successUpload(){
+    this.clearEvalDistQuotaData()
+    this.dataSource.loadEvalDistQuota(this.getSearchJson(),this.updateMap,this.curList);
+    this.msg.info("上传成功！")
+  }
+    /**
+   * 上传失败
+   */
+  errorUpload(){
+    this.clearEvalDistQuotaData()
+   // this.dataSource.loadEvalDistQuota(this.getSearchJson(),this.updateMap,this.curList);
+    this.msg.info("上传失败！")
+  }
+  
+   
   /**
    * 、日期变化
    * @param result 
@@ -140,7 +131,7 @@ private uploadDistQuotaUrl="http://127.0.0.1:8762/eval/postExcelEvalDistQuota?ye
   dateChange(result: Date){
     console.log("日期变化",result)
     if(result!=null)
-  this.uploadDistQuotaUrl= "http://127.0.0.1:8762/eval/postExcelEvalDistQuota?year="+ result.getTime();
+  this.uploadDistQuotaUrl= this.evalService.uploadDistQuotaUrl + result.getTime();
   }
 /**
  * 改变行

@@ -1,3 +1,50 @@
-<p>
-  ready-step-fifth works!
-</p>
+
+<div class="steps-content step-content"> 
+    <div class="table-operations">
+         <button nz-button style="margin-bottom:5px;margin-left:88%" (click)="saveOrgLeaderList()" class="editable-add-btn">保存</button>
+        </div>
+ <nz-table 
+ #baseTable 
+  nzBordered
+  nzSize="small"
+  [nzLoading]="dataSource.dataStatus.loading$ | async"
+  nzNoResult="无数据"
+  nzShowQuickJumper="true"
+   nzTitle ="部门对应部门正职"
+   nzFrontPagination="true"
+   [(nzData)]="dataSource.dataStatus.myData"
+   nzPageSize="13"
+ 
+  >
+ <thead>
+ <tr> 
+   <th>#</th>
+   <!-- <th> 线编号</th> -->
+   <th> 部门编号</th>
+   <th> 部门名称</th>
+   <th> 正职编号</th>
+   <th> 正职名称</th>
+  </tr>
+ </thead>
+     <tr *ngFor="let data of baseTable.data;let i = index">
+       <td>{{i+1}}</td>
+       <td>{{data.organizationCode}}</td>
+       <td>{{data.organizationName}}</td>
+       <td>
+         
+        <input nz-input  nzSize="default"  placeholder="请输入员工编号或姓名" 
+         (change) = "onChange(data)" (ngModelChange)="onChangeEmp($event)"  [(ngModel)]="data.leaderCode" [nzAutocomplete]="auto">
+      
+        <nz-autocomplete nzBackfill #auto>
+            <nz-auto-option *ngFor="let option of options" [nzValue]="option.employeeCode">
+            {{option.employeeCode}}
+            <span style=" color: #999; " >({{option.employeeName}})  </span>
+            </nz-auto-option>
+            </nz-autocomplete>
+
+      </td>
+       <!-- <td> <input nz-input  nzSize="default"   (change)="onChange()" [(ngModel)]="data.leaderName" >  </td>   -->
+       <td>{{data.leaderName}}</td>
+     </tr>   
+ </nz-table>
+</div>

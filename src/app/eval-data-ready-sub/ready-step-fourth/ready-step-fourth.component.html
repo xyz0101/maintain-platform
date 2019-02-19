@@ -7,7 +7,7 @@
             <nz-form-item *ngIf="control.field=='dataDate'" nzFlex style="float:left;margin-left:1%">
                 <nz-form-label nzRequired="true" [nzFor]="control.field"> {{control.val}}</nz-form-label>
                 <nz-form-control>
-                    <nz-date-picker   [formControlName]="control.field" [attr.id]="control.field"   nzFormat="yyyy-MM-dd"></nz-date-picker>
+                    <nz-date-picker  [(ngModel)]="evalService.dataDate"   [formControlName]="control.field" [attr.id]="control.field"   nzFormat="yyyy-MM-dd"></nz-date-picker>
                     <nz-form-explain *ngIf="validateForm.get('dataDate').dirty && validateForm.get('dataDate').errors">必须指定一个时间节点</nz-form-explain>
                  </nz-form-control>
               </nz-form-item>
@@ -51,7 +51,8 @@
       <nz-progress  *ngIf="showProcess" [(nzPercent)]="processRate"></nz-progress>
     <nz-table #ajaxTable nzBordered nzSize="small" nzNoResult="无数据" nzShowQuickJumper="true" nzTitle="年度评价人员信息表" [nzFrontPagination]="false"
       [(nzData)]="dataSource.dataStatus.myData" [nzLoading]="dataSource.dataStatus.loading$ | async" [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
-      [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage" [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize" (nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage)">
+      [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage" [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize" 
+      (nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage+'')">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
           <th>#</th>

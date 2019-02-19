@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -17,7 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
   MatSortModule, MatTableModule, MatCheckboxModule } from "@angular/material";
 import { NgZorroAntdModule, NZ_I18N, en_US, zh_CN } from 'ng-zorro-antd';
-import { registerLocaleData } from '@angular/common';
+import { registerLocaleData, HashLocationStrategy } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormGroup } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -29,17 +29,23 @@ import { ReadyStepThirdComponent } from './eval-data-ready-sub/ready-step-third/
 import { RouterGuard } from 'src/app/guard/RouterGuard';
 import { ReadyStepFourthComponent } from './eval-data-ready-sub/ready-step-fourth/ready-step-fourth.component';
 import { ReadyStepFifthComponent } from './eval-data-ready-sub/ready-step-fifth/ready-step-fifth.component';
+import { InterceptorServiceService } from 'src/app/interceptor-service.service';
+import { TargetMaintainComponent } from './target/target-maintain/target-maintain.component';
+import { LocationStrategy } from '@angular/common';
+import { TargetSelfDateMaintainComponent } from './target/target-self-date-maintain/target-self-date-maintain.component';
+import { TargetSelfTodoComponent } from './target/target-self-todo/target-self-todo.component';
     
 registerLocaleData(en);
  const routerConfig:Routes=[
-  {path:'home',component:EvalMaintainComponent},
-  {path:'evaluate/first/:curPage',component:EvalMaintainComponent},
-  {path:'evaluate/ready',component:EvalDataReadyComponent,children:[
-    {path:'',component:ReadyStepOneComponent ,canDeactivate:[RouterGuard] },
-    {path:'stepsecond',component:ReadyStepSecondComponent ,canDeactivate:[RouterGuard] },
-    {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard] },
-    {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] },
-    {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] }
+  {path:'home',component:EvalMaintainComponent,canActivate:[RouterGuard]},
+  {path:'eval/first/:curPage',component:EvalMaintainComponent,canActivate:[RouterGuard]},
+  {path:'target/selfdate',component:TargetSelfDateMaintainComponent,canActivate:[RouterGuard]},
+  {path:'eval/ready',component:EvalDataReadyComponent,canActivate:[RouterGuard],children:[
+    {path:'',component:ReadyStepOneComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
+    {path:'stepsecond',component:ReadyStepSecondComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
+    {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
+    {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
+    {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]}
     
     
   ],canDeactivate:[RouterGuard]}
@@ -56,7 +62,10 @@ registerLocaleData(en);
     ReadyStepOneComponent,
     ReadyStepThirdComponent,
     ReadyStepFourthComponent,
-    ReadyStepFifthComponent 
+    ReadyStepFifthComponent,
+    TargetMaintainComponent,
+    TargetSelfDateMaintainComponent,
+    TargetSelfTodoComponent 
    ],
   imports: [
     BrowserModule,
@@ -74,11 +83,14 @@ registerLocaleData(en);
     MatSortModule,
     MatProgressSpinnerModule,
     BrowserModule,
-    RouterModule.forRoot(routerConfig,{ onSameUrlNavigation: 'reload'}),
+    RouterModule.forRoot(routerConfig,{useHash: true, onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
     NgZorroAntdModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN },RouterGuard],
+  providers: [{ provide: NZ_I18N, useValue: zh_CN },RouterGuard,  {provide:HTTP_INTERCEPTORS,useClass:InterceptorServiceService,multi:true}, {
+    provide: LocationStrategy,
+    useClass: HashLocationStrategy
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

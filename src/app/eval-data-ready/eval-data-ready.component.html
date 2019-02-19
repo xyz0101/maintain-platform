@@ -6,7 +6,7 @@
         <nz-step nzTitle="评语分布率调整"></nz-step>
         <nz-step nzTitle="时间节点数据初始化"></nz-step>
         <nz-step nzTitle="确认部门正职"></nz-step>
-        <nz-step nzTitle="完成"></nz-step>
+    
       </nz-steps>
   <router-outlet></router-outlet>
      
@@ -17,11 +17,15 @@
         <button nz-button nzType="default" (click)="next()" *ngIf="current < 4">
           <span>下一步</span>
         </button>
-        <button nz-button nzType="primary" (click)="done()" *ngIf="current === 4">
+        <button nz-button nzType="primary" (click)="showUpdateDialog()" *ngIf="current === 4">
           <span>完成</span>
         </button>
       </div>
 
 
 </div>
+
+<nz-modal [(nzVisible)]="isUpdataShow" nzTitle="完成前的确认" (nzOnCancel)="cancelUpdate()" (nzOnOk)="handleOk()" [nzOkLoading]="isOkLoading">
+    <p>确认当前页面是否已经保存？如果确认将会以{{evalService.dataDate|date:'yyyy/MM/dd'}} 为时间节点准备年度评价数据。</p>
+  </nz-modal>
 </div>

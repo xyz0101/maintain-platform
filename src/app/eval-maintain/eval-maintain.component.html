@@ -63,7 +63,7 @@
 [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
 [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
 [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize"
-(nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage)"
+(nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage+'')"
  >
 <thead  (nzSortChange)="sort($event)" nzSingleSort>
 <tr> 

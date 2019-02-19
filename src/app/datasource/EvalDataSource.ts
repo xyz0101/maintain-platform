@@ -1,7 +1,7 @@
 import { DataSource } from "@angular/cdk/collections";
 import { CollectionViewer } from "@angular/cdk/collections";
 import { Observable, BehaviorSubject, of } from "rxjs";
-import { EvalServiceService } from "src/app/eval-service.service";
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { HttpClient } from '@angular/common/http';
 import { finalize, catchError } from "rxjs/operators";
 import { EvalMgrYear } from "src/app/entity/EvalMgrYear";
@@ -17,7 +17,7 @@ export class EvalDataSource  {
     public  dataStatus = new DataStatus();
     public  dataStatus1 = new DataStatus();
     public  dataStatus2 = new DataStatus();
-    constructor(private evalService:EvalServiceService){
+    constructor(public evalService:EvalServiceService){
         registerLocaleData(zh)
     }
     
@@ -188,7 +188,17 @@ export class EvalDataSource  {
         })
     }
 
-
+    loadOgrLeaderList(updateMap:Map<string,any>,curList:Array<any>){
+        this.dataStatus.loadingEvalSubject.next(true)
+        this.evalService.getOrgLeaderList().subscribe(
+            res=>{
+                res.map(result=>{
+                    this.dataStatus.myData= this.checkUpdate(updateMap,curList,result.data.listData)  ;
+                    this.dataStatus.loadingEvalSubject.next(false)
+                }) 
+            })
+        
+    }
 
 
 

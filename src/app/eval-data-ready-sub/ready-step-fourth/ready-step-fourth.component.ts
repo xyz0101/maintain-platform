@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MyComponent } from 'src/app/comps/MyComponent';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
-import { EvalServiceService } from 'src/app/eval-service.service';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { FormBuilder } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { Validators } from '@angular/forms';
+import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
  
 @Component({
   selector: 'app-ready-step-fourth',
@@ -13,11 +14,19 @@ import { Validators } from '@angular/forms';
   styleUrls: ['./ready-step-fourth.component.css']
 })
 export class ReadyStepFourthComponent extends MyComponent {
-  private processRate = 0;
-  private executorId = null;
-  private showRefresh = true;;
-  private showProcess = false;
-  private isRefreshing = true;
+  
+  // 进度值
+  public processRate = 0;
+  //执行刷新的唯一标识
+  public executorId = null;
+  //是否展示刷新按钮
+  public showRefresh = true;
+  //是否展示进度条
+  public showProcess = false;
+  //定时程序是否在执行
+  public isRefreshing = true;
+  //定时器
+  public interval;
   /**
    * 加载数据
    */
@@ -52,7 +61,7 @@ export class ReadyStepFourthComponent extends MyComponent {
     this.validateForm.setControl("dataDate", new FormControl(null,Validators.required))
 
     //初始化表格
-    super.initTable();
+    super.initTable(new EvalDataSource(this.evalService));
   this.searchEval()   
 
   }
@@ -108,41 +117,38 @@ startRefresh(){
  */
 getProcessRate(){
   var index =1
- var interval = setInterval(() => {
+ this.interval = setInterval(() => {
+  index++;
   console.log("当前的id==",this.executorId)
     this.evalService.getProcessRate(this.executorId).subscribe(res=>{
       console.log("获取进程结果==",res)
       if("E"==res.rtnCode){
-        console.log(1)
         this.error(res.rtnMsg);
         this.showRefresh = true;
-        clearInterval(interval)
+        clearInterval(this.interval)
         this.isRefreshing = false;
       }else if("S"==res.rtnCode){
-        console.log(2)
         if("null"!=res.data){
            this.processRate = res.data;
            this.showRefresh = true;
            this.success(res.rtnMsg);
-           clearInterval(interval)
+           clearInterval(this.interval)
            this.isRefreshing = false;
         }
       }else{
-        console.log(3)
           if("null"!=res.data&&res.data>0){
             console.log(4)
             if(this.executorId==null||this.executorId==''){
               this.executorId = res.rtnMsg;
             }
- 
             this.processRate = res.data;
             this.showProcess=true;
-            this.showRefresh = false;
-            if(index>300){
-              clearInterval(interval)
-             }
-            
+            this.showRefresh = false; 
           }
+          if(index>200&&(res.data=='null')||res.data==null){
+            clearInterval(this.interval)
+           }
+          
         }
     })
 
@@ -150,5 +156,10 @@ getProcessRate(){
 
 
 }
-
+//销毁组件时清除定时器
+ngOnDestroy() {
+  if (this.interval) {
+    clearInterval(this.interval);
+  }
+}
 }

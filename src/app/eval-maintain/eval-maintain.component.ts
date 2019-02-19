@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EvalServiceService } from 'src/app/eval-service.service';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { Params } from '@angular/router/src/shared';
 import { PageInfo } from 'src/app/entity/PageInfo';
 import {MatTableModule} from '@angular/material/table';
@@ -23,6 +23,7 @@ import { MyComponent } from 'src/app/comps/MyComponent';
   styleUrls: ['./eval-maintain.component.css']
 })
 export class EvalMaintainComponent extends MyComponent    {
+  
  
  
   //注入路由信息,以及评价的服务
@@ -37,7 +38,7 @@ export class EvalMaintainComponent extends MyComponent    {
     //初始化职等下拉列表
     this.initEmpLevelList();
     //初始化数据表
-    super.initTable();
+    super.initTable(new EvalDataSource(this.evalService));
   
   }
   /**

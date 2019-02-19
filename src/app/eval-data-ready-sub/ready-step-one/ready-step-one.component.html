@@ -1,8 +1,8 @@
 <div class="steps-content step-content">
         
     <div class="table-operations">
-        <nz-upload style="float:left"
-        nzAction="http://127.0.0.1:8762/eval/postExcel"
+        <!-- <nz-upload style="float:left"
+        [nzAction]="evalService.postEmpRangeUrl"
         [nzFileList]="fileList"
         nzMultiple="false"
          nzLimit ="1"
@@ -14,7 +14,18 @@
           <i nz-icon type="upload"></i><span>上传Excel</span>
         </button>
        
+      </nz-upload> -->
+
+  <nz-upload  style="float:left"
+        [nzAction]="evalService.postEmpRangeUrl" [nzCustomRequest] ="customReq"
+      >
+        <button nz-button style="margin-bottom:5px">
+          <i nz-icon type="upload"></i><span>上传Excel</span>
+        </button>
+       
       </nz-upload>
+
+      
       <button nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()" ><i nz-icon type="download"></i>导出Excel</button>
     </div>
   

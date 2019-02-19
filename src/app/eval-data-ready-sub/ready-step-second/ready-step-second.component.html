@@ -29,8 +29,15 @@
         <tr *ngFor="let data of editRowTable.data;let i = index">
           <td>{{i+1}}</td>
           <td> {{data.drCode}}     </td>
-          <td> <input nz-input  nzSize="default"   (change)="onChange()" [(ngModel)]="data.drName" >  </td>
-          <td> <input nz-input  nzSize="default"   (change)="onChange()" [(ngModel)]="data.drMgr" >  </td>
+          <td> {{data.drName }}  </td>
+          <td> <input nz-input  nzSize="default" (ngModelChange)="onChangeEmp($event)"  (change)="onChange(data)" [(ngModel)]="data.drMgr"  [nzAutocomplete]="auto"> 
+            <nz-autocomplete nzBackfill #auto>
+                <nz-auto-option *ngFor="let option of options" [nzValue]="option.employeeCode">
+                {{option.employeeCode}}
+                <span style=" color: #999; " >({{option.employeeName}})  </span>
+                </nz-auto-option>
+                </nz-autocomplete>
+               </td>
           <td> <input nz-input  nzSize="default"   (change)="onChange()" [(ngModel)]="data.drMgrName" >  </td>
           <td>
               <nz-popconfirm [nzTitle]="'确认删除?'" (nzOnConfirm)="deleteUIRow(data)">
@@ -51,10 +58,9 @@
             <button     nz-button (click)="addRow1()"  >添加</button>
         </nz-form-control>
         </nz-form-item>
- <button     nz-button (click)="addRow1()"  >添加</button>
-        <nz-form-item     *ngFor="let control of controlArray"   >
+         <nz-form-item     *ngFor="let control of controlArray"   >
         <nz-form-control>
-            <nz-date-picker [nzDisabled]="showReSet"    [formControlName]="control.field" [attr.id]="control.field"  nzFormat="yyyy-MM-dd"></nz-date-picker>
+            <nz-date-picker   nz-popover  nzTitle="提示"  nzContent="该日期为年度评价时间节点，后续的时间节点都会引用该时间节点！" [nzDisabled]="showReSet"  [(ngModel)]="evalService.dataDate"  [formControlName]="control.field" [attr.id]="control.field"  nzFormat="yyyy-MM-dd"></nz-date-picker>
         </nz-form-control>
         </nz-form-item>
      

@@ -4,10 +4,17 @@
    
       
     <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
-      <nz-form-item *ngIf="validateForm!=undefined &&validateForm!=null&&validateForm.value!=null&&validateForm.value.date!=null " >
+      <nz-form-item *ngIf="validateForm!=undefined &&validateForm!=null&&validateForm.value!=null&&validateForm.value.dataDate!=null " >
           <nz-form-control>
-            <nz-upload   [nzAction]="uploadDistQuotaUrl" [nzFileList]="fileList" nzMultiple="false"
+            <!-- <nz-upload   [nzAction]="uploadDistQuotaUrl" [nzFileList]="fileList" nzMultiple="false" nzWithCredentials="true"
               nzLimit="1" nzName="excelFile" nzShowUploadList="false" [nzFilter]="filters" (nzChange)="handleChange($event)">
+              <button nz-button style="margin-bottom:5px;">
+                <i nz-icon type="upload"></i>
+                <span>上传Excel</span>
+              </button>
+            </nz-upload> -->
+
+            <nz-upload   [nzAction]="uploadDistQuotaUrl"  [nzCustomRequest] ="customReq"    >
               <button nz-button style="margin-bottom:5px;">
                 <i nz-icon type="upload"></i>
                 <span>上传Excel</span>
@@ -17,7 +24,8 @@
         </nz-form-item>
       <nz-form-item *ngFor="let control of controlArray">
         <nz-form-control>
-          <nz-date-picker [nzDisabled]="showReSet" [formControlName]="control.field" [attr.id]="control.field" (ngModelChange)="dateChange($event)" nzFormat="yyyy-MM-dd"></nz-date-picker>
+          <nz-date-picker [nzDisabled]="showReSet"   [(ngModel)]="evalService.dataDate" [formControlName]="control.field"
+           [attr.id]="control.field" (ngModelChange)="dateChange($event)" nzFormat="yyyy-MM-dd"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
 

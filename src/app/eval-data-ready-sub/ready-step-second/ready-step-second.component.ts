@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MyComponent } from 'src/app/comps/MyComponent';
 import { ActivatedRoute } from '@angular/router';
-import { EvalServiceService } from 'src/app/eval-service.service';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { FormBuilder } from '@angular/forms';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { HrDeptRegion } from 'src/app/entity/HrDeptRegion';
@@ -11,12 +11,14 @@ import { registerLocaleData } from '@angular/common';
 import { error } from 'selenium-webdriver';
 import { Timestamp } from 'rxjs/internal/operators/timestamp';
 import { DatePipe } from '@angular/common';
+import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
 @Component({
   selector: 'app-ready-step-second',
   templateUrl: './ready-step-second.component.html',
   styleUrls: ['./ready-step-second.component.css']
 })
 export class ReadyStepSecondComponent extends MyComponent {
+   
 
 //缓存的当前列表的map
 public curList1 = new Array<any>();
@@ -40,7 +42,7 @@ public showSearch = true;
     this.dataSource.loadHrDeptRegionDtl(this.updateMap1,this.curList1,   this.getSearchJson());
   }
   initSearchFields() {
-    this.searchFields.set('date','日期指定');
+    this.searchFields.set('dataDate','日期指定');
   }
 
  //注入路由信息,以及评价的服务
@@ -51,17 +53,26 @@ public showSearch = true;
 
   ngOnInit() {
     registerLocaleData(zh);
-    super.initTable();
+    super.initTable(new EvalDataSource(this.evalService));
     super.initSearch();
+    this.validateForm.value.dataDate=new Date()
     
   }
 
 /**
  * 改变行
  */
-  onChange(){
-
-
+  onChange(data){
+    //延迟执行
+    setTimeout(() => {
+      if(data!=undefined)
+      this.options.forEach(item=>{
+     if(item.employeeCode==data.drMgr){
+       console.log( "当前item",item)
+       data.drMgrName = item.employeeName
+     }
+   })
+    }, this.timeOutNum);  
   this.updateList=  this.changeStatu(this.curList,this.updateMap,this.updateList,this.dataSource.dataStatus)
   }
   /**
@@ -173,6 +184,7 @@ public showSearch = true;
   if(this.addUIList.length==0&&this.updateList.length==0&&this.deleteList.length==0){
     this.msg.info("未发生任何改动！")
   }else{
+    
     console.log(JSON.stringify(this.addUIList))
   //获取新增的线
   //获取修改的线
@@ -202,6 +214,7 @@ saveDeptRegionDtl(){
   if(this.addUIList1.length==0&&this.updateList1.length==0&&this.deleteList1.length==0){
     this.msg.info("未发生任何改动！")
   }else{
+     
   //获取新增的部门与线的关系
   //获取修改的部门与线的关系
   /*********** 先把日期格式化 因为日期toJSON 后的格式后台无法解析 ****************/

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { EvalServiceService } from 'src/app/eval-service.service';
-import { Params } from '@angular/router/src/shared';
+ import { Params } from '@angular/router/src/shared';
 import { PageInfo } from 'src/app/entity/PageInfo';
 import {MatTableModule} from '@angular/material/table';
  import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
@@ -13,15 +12,27 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material';
 import { tap } from 'rxjs/operators';
 import { SelectionModel } from '@angular/cdk/collections';
 import { FormGroup,FormBuilder ,FormControl} from '@angular/forms';
-import { NzModalService, NzMessageService, UploadFile, UploadFilter } from 'ng-zorro-antd';
+import { NzModalService, NzMessageService, UploadFile, UploadFilter, UploadXHRArgs } from 'ng-zorro-antd';
 import { saveAs } from 'file-saver';
 import { ResponseContentType } from '@angular/http';
 import { Observer } from 'rxjs';
 import { DataStatus } from 'src/app/entity/DataStatus';
 import { async } from '@angular/core/testing';
+import { HttpEventType } from '@angular/common/http';
+import { HttpEvent } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 export abstract class MyComponent implements    OnInit {
-
-
+  errorUpload(): any {
+    throw new Error("Method not implemented.");
+  }
+  successUpload(): any {
+    throw new Error("Method not implemented.");
+  }
+  //延迟时间
+  public timeOutNum=200;
+  //输入员工的自动提示
+ public options=[];
  //当前页码
  public curPage :number=1;
  //分页信息
@@ -65,6 +76,10 @@ export abstract class MyComponent implements    OnInit {
  public fileList = [];
  //文件过滤器
  public filters: UploadFilter[];
+
+
+
+
  //注入路由信息,以及评价的服务
  constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
    public modalService: NzModalService,public msg: NzMessageService) { 
@@ -80,9 +95,9 @@ export abstract class MyComponent implements    OnInit {
 /**
  * 初始化表格
  */
-initTable(){
+initTable(dataSource:EvalDataSource){
      //初始化数据源
-     this.dataSource = new EvalDataSource(this.evalService);
+     this.dataSource = dataSource;
      //获取路由信息中的订阅参数
      this.routerInfo.params.subscribe((params:Params)=>{
          //获取页码  
@@ -261,7 +276,7 @@ initTable(){
      this.updateList=updateList;
 
 
-    }, 50);
+    }, this.timeOutNum);
     console.log("延迟完成")
      return updateList;
    
@@ -291,20 +306,6 @@ initTable(){
     this.loadEvalByPage(this.dataSource.dataStatus.pageInfo.curPage+"")
  }
  
-
-
- handleChange(info: any): void {
- 
-
-  var item = info.fileList[info.fileList.length-1];
-  if (item!=null&&item.status=='done') {
-      
-    this.loadData();
-    this.msg.info("上传成功！")
-    
-  } 
- 
-}
 /**
  * 添加行
  * @param addUIList 
@@ -368,4 +369,60 @@ return addList;
 getSearchJson():string{
  return JSON.stringify((this.validateForm==undefined||this.validateForm==null) ? {'null':null}: this.validateForm.value) ;
 }
+
+/**
+ * 
+ * @param data 输入员工编号时候
+ * @param event 
+ */
+ onChangeEmp(event:string) {
+  this.loadInputEmps(event)
+ }
+/**
+ * 加载输入的员工提示
+ */
+loadInputEmps(inputValue:string){
+this.evalService.getInputEmpList(inputValue).subscribe(
+  res=>{
+    this.options=res;
+  }
+)
+}
+
+public customReq = (item: UploadXHRArgs) => {
+  
+  // 始终返回一个 `Subscription` 对象，nz-upload 会在适当时机自动取消订阅
+  return   this.evalService.uploadExcel(item).subscribe((event: HttpEvent<{}>) => {
+    if (event.type === HttpEventType.UploadProgress) {
+      if (event.total > 0) {
+        // tslint:disable-next-line:no-any
+        (event as any).percent = event.loaded / event.total * 100;
+      }
+      // 处理上传进度条，必须指定 `percent` 属性来表示进度
+      item.onProgress(event, item.file);
+    } else if (event instanceof HttpResponse) {
+      // 处理成功
+      item.onSuccess(event.body, item.file, event);
+      this.successUpload();
+      
+    }
+  }, (err) => {
+    // 处理失败
+    item.onError(err, item.file);
+    this.errorUpload();
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

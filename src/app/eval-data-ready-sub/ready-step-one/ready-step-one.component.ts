@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MyComponent } from 'src/app/comps/MyComponent';
 import { ActivatedRoute } from '@angular/router';
 import { NzModalService, NzMessageService, UploadFile, UploadFilter } from 'ng-zorro-antd';
-import { EvalServiceService } from 'src/app/eval-service.service';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
 import { FormBuilder } from '@angular/forms';
 import { Observable, Observer } from 'rxjs';
+import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
 
 @Component({
   selector: 'app-ready-step-one',
@@ -25,7 +26,7 @@ export class ReadyStepOneComponent  extends MyComponent {
 
   ngOnInit() {
     this.curPage=1;
-    super.initTable();
+    super.initTable(new EvalDataSource(this.evalService));
   }
    /**
    * 加载数据
@@ -78,41 +79,23 @@ searchUIName(){
     this.evalService.downLoadExcel() 
    }
    
- filters = [
-  {
-    name: 'type',
-    fn  : (fileList: UploadFile[]) => {
-  
-      const filterFiles =[];
-      var i=0;
-      fileList.forEach((vaule:UploadFile,index :number)=>{
-        console.log(vaule.type)
-        console.log('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.indexOf(vaule.type))
-        if(vaule.type!=null&&vaule.type!=''&& ('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'.indexOf(vaule.type)>-1 ||
-        'application/vnd.ms-excel'.indexOf(vaule.type)>-1 )){
-         
-          filterFiles[i]=vaule;
-          i++;
-        }
-      })
-    if (filterFiles.length !== fileList.length) {
-       this.msg.error(`包含文件格式不正确，只允许上传Excel表格`);
-       return filterFiles;
-     }
-      return fileList;
-    }
-  },
-  {
-    name: 'async',
-    fn: (fileList: UploadFile[]) => {
-      return new Observable((observer: Observer<UploadFile[]>) => {
-        observer.next(fileList);
-        observer.complete();
-      });
-    }
-  }
-];
 
+ /**
+   * 上传成功
+   */
+  successUpload(){
+    this.loadData()
+     this.msg.info("上传成功！")
+  }
+    /**
+   * 上传失败
+   */
+  errorUpload(){
+   
+     this.msg.info("上传失败！")
+  }
+
+ 
 
 
 
