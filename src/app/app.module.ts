@@ -34,7 +34,12 @@ import { TargetMaintainComponent } from './target/target-maintain/target-maintai
 import { LocationStrategy } from '@angular/common';
 import { TargetSelfDateMaintainComponent } from './target/target-self-date-maintain/target-self-date-maintain.component';
 import { TargetSelfTodoComponent } from './target/target-self-todo/target-self-todo.component';
+
 import { WxbtestComponent } from './wxbtest/wxbtest.component';
+
+
+import { SalaryMaintainComponent } from './salary/salary-maintain/salary-maintain.component';
+    
 
 registerLocaleData(en);
  const routerConfig:Routes=[
@@ -66,7 +71,11 @@ registerLocaleData(en);
     TargetMaintainComponent,
     TargetSelfDateMaintainComponent,
     TargetSelfTodoComponent,
+
     WxbtestComponent
+
+    SalaryMaintainComponent 
+
    ],
   imports: [
     BrowserModule,
