@@ -22,6 +22,7 @@ import { HttpEventType } from '@angular/common/http';
 import { HttpEvent } from '@angular/common/http';
 import { HttpResponse } from '@angular/common/http';
 import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
+import {TargetDataSource} from '../datasource/TargetDataSource';
 export abstract class MyComponent implements    OnInit {
   errorUpload(): any {
     throw new Error("Method not implemented.");
@@ -53,8 +54,9 @@ export abstract class MyComponent implements    OnInit {
  public isOkLoading = false;
  //已修改的数据的当前页
  public updateCurPage=1;
- //数据源
- public dataSource :EvalDataSource;
+ //数据源1
+ public dataSource: EvalDataSource;
+
  //搜索的字段
  public  searchFields  =new Map();
  //构造搜索表单
@@ -82,7 +84,7 @@ export abstract class MyComponent implements    OnInit {
 
  //注入路由信息,以及评价的服务
  constructor( public routerInfo:ActivatedRoute,public evalService:EvalServiceService ,public fb: FormBuilder,
-   public modalService: NzModalService,public msg: NzMessageService) { 
+   public modalService: NzModalService,public msg: NzMessageService) {
  
  }
  public setSearchFieldsLimitForRow(value:number){
@@ -95,43 +97,43 @@ export abstract class MyComponent implements    OnInit {
 /**
  * 初始化表格
  */
-initTable(dataSource:EvalDataSource){
-     //初始化数据源
+initTable(dataSource: EvalDataSource) {
+     // 初始化数据源
      this.dataSource = dataSource;
-     //获取路由信息中的订阅参数
-     this.routerInfo.params.subscribe((params:Params)=>{
-         //获取页码  
+     // 获取路由信息中的订阅参数
+     this.routerInfo.params.subscribe((params: Params) => {
+       // 获取页码
        //  this.curPage=params["curPage"];
      })
-     //加载数据
-     this.loadEvalByPage(this.curPage+"");
+     // 加载数据
+     this.loadEvalByPage(this.curPage + '');
 }
 /**
  * 初始化搜索
  */
-  initSearch(){
-    //初始化搜索字段
+  initSearch() {
+    // 初始化搜索字段
     this.initSearchFields();
-    //构建表单
+    // 构建表单
     this.construtSearch();
   }
 
 /**
   * 从服务器端获取数据
-  * @param curPage 
+  * @param curPage
   */
- loadEvalByPage(curPage:string){
-   if(curPage==null){
-     this.curPage=1;
-   }else{
-     this.curPage=  parseInt(curPage) ;
+ loadEvalByPage(curPage: string){
+   if (curPage == null) {
+     this.curPage = 1;
+   } else {
+     this.curPage = parseInt (curPage) ;
    }
    console.log(curPage);
-   //置空当前数据集合
-     this.curList=this.curList.filter(d => d ==null);
-   //加载数据
+   // 置空当前数据集合
+     this.curList = this.curList.filter(d => d == null);
+   // 加载数据
    this.loadData();
-   console.log("当前集合");
+   console.log('当前集合');
    console.log(this.curList);
  }
  abstract loadData();

@@ -3,7 +3,7 @@ import { Http  ,Headers, Response,ResponseContentType ,URLSearchParams} from '@a
 import { Observable, throwError} from 'rxjs';
 import * as _ from 'lodash';
 import { HttpClient,HttpParams } from '@angular/common/http';
-import { map } from"rxjs/operators";
+import { map } from "rxjs/operators";
 import { EvalMgrYear } from 'src/app/entity/EvalMgrYear';
 import { Result } from 'src/app/entity/Result';
 import { HttpHeaders } from '@angular/common/http';
@@ -26,21 +26,21 @@ private resData;
  // private  baseEvalUrl= "http://172.16.134.98:8700/eval";
 
 
-//查询年度评价数据
+// 查询年度评价数据
 private searchUrl =   this.baseEvalUrl+"/getEvalYearByCondition";
-//修改年度评价数据
+// 修改年度评价数据
 private updateUrl =   this.baseEvalUrl+"/updateEvalYearMgr";
 // 查询人员范围
 private searchIncludeEmpsUrl =   this.baseEvalUrl+"/getEvalIncludeEmps";
-//查询线
+// 查询线
 private searchHrDeptRegionUrl =   this.baseEvalUrl+"/getHrDeptRegion";
 // 保存线修改
 private saveHrDeptRegionUrl =   this.baseEvalUrl+"/saveDeptRegionData";
-//查询线与部门关系
-private searchHrDeptRegionDtlUrl =   this.baseEvalUrl+"/getHrDeptRegionDtl";
-//保存线与部门关系
+// 查询线与部门关系
+private searchHrDeptRegionDtlUrl =   this.baseEvalUrl+ "/getHrDeptRegionDtl";
+// 保存线与部门关系
 private saveHrDeptRegionDtlUrl =   this.baseEvalUrl+"/saveDeptRegionDtlData";
-//查询评语分布率
+// 查询评语分布率
 private searchEvalDistQuotaUrl =    this.baseEvalUrl+"/getEvalDistQuota";
 //导出评语分布率
 private exportEvalDistQuotaUrl =    this.baseEvalUrl+"/exportEvalDistQuota";
@@ -257,9 +257,9 @@ generateExcel(data:any,title:string){
    * 根据指定年份获取评语分布率
    * @param year 
    */
-  getEvalDistQuotaByYear(searchValue:string):Observable<Result[]>{
-    const params = new HttpParams().set("searchValue",searchValue);
-    return this.http.get<Result[]>(this.searchEvalDistQuotaUrl,{params} ).pipe(
+  getEvalDistQuotaByYear(searchValue: string):Observable<Result[]> {
+    const params = new HttpParams().set('searchValue', searchValue);
+    return this.http.get<Result[]>(this.searchEvalDistQuotaUrl, { params}  ).pipe(
       catchError(this.handleError)
     )
   }
@@ -376,11 +376,11 @@ finishEvalReady():Observable<Result>{
 uploadExcel(item: UploadXHRArgs):Observable<any>{
   const formData = new FormData();
   formData.append('excelFile', item.file as any);
-  const req = new HttpRequest('POST', item.action, formData, {
-    reportProgress : true,
-    withCredentials: false,//当此选项（是否携带cookis）为true的时候后端的跨域设置不能为 Access-Control-Allow-Origin: * 
-  });
-  return this.http.request(req);
+    const req = new HttpRequest('POST', item.action, formData, {
+      reportProgress : true,
+      withCredentials: false,//当此选项（是否携带cookis）为true的时候后端的跨域设置不能为 Access-Control-Allow-Origin: *
+    });
+    return this.http.request(req);
 }
 
 
