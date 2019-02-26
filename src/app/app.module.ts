@@ -39,7 +39,13 @@ import { WxbtestComponent } from './wxbtest/wxbtest.component';
 
 
 import { SalaryMaintainComponent } from './salary/salary-maintain/salary-maintain.component';
+import { SalarySpecialConfigComponent } from './salary/salary-special-config/salary-special-config.component';
+import { SalaryHolidayConfigComponent } from './salary/salary-holiday-config/salary-holiday-config.component';
+import { NoAuthPageComponent } from './no-auth-page/no-auth-page.component';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
+import { TargetService } from 'src/app/target-service/target.service';
     
+registerLocaleData(zh);
 
 registerLocaleData(en);
  const routerConfig:Routes=[
@@ -53,7 +59,16 @@ registerLocaleData(en);
     {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
     {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
     {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]}
+
+    
+    
+  ],canDeactivate:[RouterGuard]},
+  {path:'salary/special',component:SalarySpecialConfigComponent,canActivate:[RouterGuard]},
+  {path:'salary/holiday',component:SalaryHolidayConfigComponent,canActivate:[RouterGuard]},
+  {path:'noauth',component:NoAuthPageComponent,canActivate:[RouterGuard]}
+
   ], canDeactivate: [RouterGuard]}
+
 ]
 @NgModule({
   declarations: [
@@ -72,9 +87,16 @@ registerLocaleData(en);
     TargetSelfDateMaintainComponent,
     TargetSelfTodoComponent,
 
+    SalaryMaintainComponent,
+    SalarySpecialConfigComponent,
+    SalaryHolidayConfigComponent,
+    NoAuthPageComponent 
+
+
     WxbtestComponent
 
     SalaryMaintainComponent 
+
 
    ],
   imports: [
@@ -100,7 +122,7 @@ registerLocaleData(en);
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, RouterGuard,  {provide: HTTP_INTERCEPTORS, useClass: InterceptorServiceService, multi: true}, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
+  },EvalServiceService,TargetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

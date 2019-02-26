@@ -1,0 +1,46 @@
+
+<div class="ant-card"  style="margin-left:15%;  width:70%">
+    <div class="steps-content step-content"> 
+<nz-calendar nzMode='month'  [(ngModel)]="selectedDate"   >
+    <ul *nzDateCell="let date" class="events" style="padding:0px">
+        <ng-container [ngSwitch]="date.getDate()">
+            <ng-container  >
+              <table style="width:130px;height:60px">
+                <tr >
+                  <td style="width:120px;height:30px" ><nz-badge nzStatus="warning" [nzText]="header"></nz-badge></td>
+                  <td>  <nz-switch nzSize="small" [nzDisabled]="activeMonth!=01"  ngModel="true"></nz-switch></td>
+                </tr>
+                <tr>
+                    <td style="width:120px;height:30px"><nz-badge nzStatus="warning" nzText="是否带薪"></nz-badge></td>
+                    <td>  <nz-switch nzSize="small" ngModel="true"></nz-switch></td>
+                  </tr>
+              </table>
+                
+              
+               
+            </ng-container>
+             
+            
+          </ng-container>
+    </ul>
+
+
+<!-- <ng-template #dateCellTpl >
+    <table style="width:130px;height:60px">
+        <tr >
+          <td style="width:120px;height:30px" ><nz-badge nzStatus="warning" nzText="是否是节假日"></nz-badge></td>
+          <td>  <nz-switch [nzDisabled]="activeMonth=="   nzSize="small" ngModel="true"></nz-switch></td>
+        </tr>
+        <tr>
+            <td style="width:120px;height:30px"><nz-badge nzStatus="warning" nzText="是否带薪"></nz-badge></td>
+            <td>  <nz-switch nzSize="small" ngModel="true"></nz-switch></td>
+          </tr>
+      </table>
+</ng-template> -->
+
+
+
+
+  </nz-calendar>
+  </div>
+  </div>

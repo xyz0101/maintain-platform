@@ -16,10 +16,10 @@ export class RouterGuard implements CanDeactivate<any>,CanActivate{
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
       this.interceptorService.getAuth().subscribe(res=>{
-        // if(!(res.code=="200"&&res.data!=null&&res.data!="null") ){
-        //     this.interceptorService.gotoLogin();  
-        //     return false;
-        //   }
+        if(!(res.code=="200"&&res.data!=null&&res.data!="null") ){
+            this.interceptorService.gotoLogin();  
+            return false;
+          }
         })
           return true;
     }
