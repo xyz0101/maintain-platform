@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
   <div class="container">
   <div class = "navbar-brand col-md-2">
-<a [routerLink]="['/home']"> <span style="font-size:20px;" ><img src="http://172.16.90.67:7778/assets/public/images/logo.png" width="90" height="30"> </span>  </a>
+<a  > <span style="font-size:20px;" ><img src="http://172.16.90.67:7778/assets/public/images/logo.png" width="90" height="30"> </span>  </a>
 </div>
 <button class="navbar-toggler" type="button" data-toggle="collapse"
  data-target="#collapsibleNavbar">
@@ -45,8 +45,19 @@
       </nz-dropdown>
   <!-- <a class="nav-link" [routerLink]="['/eval',1]" >年度评价</a> -->
 </li>
-<li style="display:none" class="nav-item">
-  <a class="nav-link">薪酬自动化</a>
+<li   class="nav-item">
+ 
+  <nz-dropdown>
+    <a nz-dropdown class="nav-link">薪酬自动化</a>
+   <ul nz-menu nzSelectable>
+     <li nz-menu-item>
+       <a  style="text-decoration:none;" [routerLink]="['/salary/special']">特殊人员名单配置</a>
+     </li>
+     <li nz-menu-item>
+       <a  style="text-decoration:none;" [routerLink]="['/salary/holiday']">节假日配置</a>
+     </li>
+   </ul>
+ </nz-dropdown>
 </li>
 </ul>
 

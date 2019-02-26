@@ -10,7 +10,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ResponseType } from '@angular/http/src/enums';
-import { UploadXHRArgs } from 'ng-zorro-antd';
+import { UploadXHRArgs, NzMessageService } from 'ng-zorro-antd';
 import { HttpRequest } from '@angular/common/http';
 import { HttpEvent } from '@angular/common/http';
 import { HttpEventType } from '@angular/common/http';
@@ -21,9 +21,9 @@ import { HttpResponse } from '@angular/common/http';
 export class EvalServiceService {
 private resData;
 //本地开发模式
-    public  baseEvalUrl= "http://127.0.0.1:8700/eval";
+  //  public  baseEvalUrl= "http://127.0.0.1:8700/eval";
 //测试环境
- // private  baseEvalUrl= "http://172.16.134.98:8700/eval";
+public  baseEvalUrl= "http://172.16.134.98:8700/eval";
 
 
 //查询年度评价数据
@@ -77,7 +77,7 @@ public  headers= new HttpHeaders();
 
 public dataDate :Date;
 
-  constructor(public http:HttpClient,public downLoadHttp:Http) {
+  constructor(public http:HttpClient,public downLoadHttp:Http,public message: NzMessageService) {
    
   }
   /**
@@ -394,6 +394,7 @@ uploadExcel(item: UploadXHRArgs):Observable<any>{
  * @param error 
  */
   public handleError(error: HttpErrorResponse) {
+    //this.message.create('error',"服务器异常！");
     console.log("异常处理")
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -404,6 +405,9 @@ uploadExcel(item: UploadXHRArgs):Observable<any>{
       console.error(
         `返回状态码 ${error.status}, ` +
         `返回 ${error.error}`);
+        if(error.status.toString()=='500'||error.status.toString()=='0'){
+         alert('服务器异常！')
+        } 
     }
     // return an observable with a user-facing error message
     return throwError(
