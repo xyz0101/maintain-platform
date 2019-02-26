@@ -1,9 +1,10 @@
-import { EvalDataSource } from "src/app/datasource/EvalDataSource";
-import { TargetService } from "src/app/target-service/target.service";
-import { DataStatus } from "src/app/entity/DataStatus";
+import { EvalDataSource } from 'src/app/datasource/EvalDataSource';
+import { TargetService } from 'src/app/target-service/target.service';
+import { DataStatus } from 'src/app/entity/DataStatus';
+import {Observable} from 'rxjs';
 
 export class TargetDataSource extends EvalDataSource{
-    constructor(public targetService:TargetService){
+    constructor(public targetService: TargetService){
          super(targetService)
     }
     public  dataStatus = new DataStatus();
@@ -40,6 +41,35 @@ export class TargetDataSource extends EvalDataSource{
             })
         })
     }
+    // 初始化EpmEvalInfo
+    loadTodoList(year: string) {
+      this.dataStatus.loadingEvalSubject.next(true);
+      this.targetService.queryEvalInfo(year).subscribe(data => {
+        // @ts-ignore
+        this.dataStatus.anyData = data;
+        this.dataStatus.loadingEvalSubject.next(false);
+      });
+    }
 
+    // insert
+   // @ts-ignore
+   insertBpmVirtRecord(param: string): Observable<any> {
+    return this.targetService.insertRecodeEval(param);
+    // .subscribe(data => {
+    //   // @ts-ignore
+    //   this.dataStatus.length = data;
+    //   alert(data);
+    // });
+  }
+
+  // delete
+  deleteVirtRecord(key: string): Observable<any> {
+     return this.targetService.deleteVirtRecord(key);
+  }
+
+  // select 
+  getEnddate(qN: string): Observable<any> {
+      return this.targetService.getTempVerEndDate(qN);
+  }
 
 }

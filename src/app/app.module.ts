@@ -10,12 +10,12 @@ import { ContentComponent } from './content/content.component';
 import { EvalMaintainComponent } from './eval-maintain/eval-maintain.component';
 import { Routes } from '@angular/router/src/config';
 import { RouterModule } from '@angular/router';
-import { HttpModule,JsonpModule } from '@angular/http';
+import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  import {NgxLoadingModule} from 'ngx-loading';
-import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, 
-  MatSortModule, MatTableModule, MatCheckboxModule } from "@angular/material";
+import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
+  MatSortModule, MatTableModule, MatCheckboxModule } from '@angular/material';
 import { NgZorroAntdModule, NZ_I18N, en_US, zh_CN } from 'ng-zorro-antd';
 import { registerLocaleData, HashLocationStrategy } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -34,22 +34,26 @@ import { TargetMaintainComponent } from './target/target-maintain/target-maintai
 import { LocationStrategy } from '@angular/common';
 import { TargetSelfDateMaintainComponent } from './target/target-self-date-maintain/target-self-date-maintain.component';
 import { TargetSelfTodoComponent } from './target/target-self-todo/target-self-todo.component';
+
+import { WxbtestComponent } from './wxbtest/wxbtest.component';
+
+
 import { SalaryMaintainComponent } from './salary/salary-maintain/salary-maintain.component';
     
+
 registerLocaleData(en);
  const routerConfig:Routes=[
   {path:'home',component:EvalMaintainComponent,canActivate:[RouterGuard]},
   {path:'eval/first/:curPage',component:EvalMaintainComponent,canActivate:[RouterGuard]},
   {path:'target/selfdate',component:TargetSelfDateMaintainComponent,canActivate:[RouterGuard]},
+   {path:'target/selfTodo',component:TargetSelfTodoComponent,canActivate:[RouterGuard]},
   {path:'eval/ready',component:EvalDataReadyComponent,canActivate:[RouterGuard],children:[
     {path:'',component:ReadyStepOneComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
     {path:'stepsecond',component:ReadyStepSecondComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
     {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
     {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
     {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]}
-    
-    
-  ],canDeactivate:[RouterGuard]}
+  ], canDeactivate: [RouterGuard]}
 ]
 @NgModule({
   declarations: [
@@ -67,7 +71,11 @@ registerLocaleData(en);
     TargetMaintainComponent,
     TargetSelfDateMaintainComponent,
     TargetSelfTodoComponent,
+
+    WxbtestComponent
+
     SalaryMaintainComponent 
+
    ],
   imports: [
     BrowserModule,
@@ -89,7 +97,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     NgZorroAntdModule
   ],
-  providers: [{ provide: NZ_I18N, useValue: zh_CN },RouterGuard,  {provide:HTTP_INTERCEPTORS,useClass:InterceptorServiceService,multi:true}, {
+  providers: [{ provide: NZ_I18N, useValue: zh_CN }, RouterGuard,  {provide: HTTP_INTERCEPTORS, useClass: InterceptorServiceService, multi: true}, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   }],
