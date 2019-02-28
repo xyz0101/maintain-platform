@@ -16,7 +16,6 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder , FormControl} from '@angular/forms';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { MyComponent } from 'src/app/comps/MyComponent';
-import {WxbServiceService} from '../wxb-service/wxb-service.service';
 
 @Component({
   selector: 'app-eval-maintain',
@@ -26,17 +25,14 @@ import {WxbServiceService} from '../wxb-service/wxb-service.service';
 export class EvalMaintainComponent extends MyComponent implements OnInit {
 
   // 注入路由信息,以及评价的服务
-  constructor( public routerInfo: ActivatedRoute, public evalService: EvalServiceService , public test: WxbServiceService, public fb: FormBuilder,
+  constructor( public routerInfo: ActivatedRoute, public evalService: EvalServiceService , public fb: FormBuilder,
     public modalService: NzModalService, public msg: NzMessageService) {
       super(routerInfo, evalService, fb, modalService, msg);
   }
 
   ngOnInit() {
     // 初始化搜索界面
-    // @ts-ignore
-    this.test.getSearchData('ssss').subscribe(data => {
-      console.log(data);
-    });
+   
     super.initSearch();
     // 初始化职等下拉列表
     this.initEmpLevelList();

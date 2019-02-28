@@ -7,11 +7,12 @@ import { PageData } from "src/app/entity/PageData";
 export class DataStatus {
     public evalMgrSubject = new BehaviorSubject<any[]>([]);
     public myData = new Array<any>();
-    public anyData ;
+    public anyData =new Object();
     public loadingEvalSubject = new BehaviorSubject<boolean>(false);
     public pageInfo = new PageInfo();
     public pageDate = new PageData();
     public loading$ = this.loadingEvalSubject.asObservable();
     public length: number;
     public rtnObj: any;
+     public mapData =new  Map<string,any>();
 }

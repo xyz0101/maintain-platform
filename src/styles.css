@@ -12,3 +12,11 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;background-c
     margin-left:3%;  width:94%; padding-top:2%; height:auto;
     padding-bottom:2%; 
 }
+.ant-fullcalendar-last-month-cell{
+    /*禁用点击事件*/
+    pointer-events: none;
+}
+.ant-fullcalendar-next-month-btn-day{
+     /*禁用点击事件*/
+    pointer-events: none;
+}
