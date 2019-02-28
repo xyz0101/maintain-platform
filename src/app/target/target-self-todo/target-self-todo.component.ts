@@ -70,6 +70,7 @@ export class TargetSelfTodoComponent extends MyComponent {
   }
 
   checkAll(value: boolean): void {
+    // @ts-ignore
     this.dataSource.dataStatus.anyData.forEach(data => {
       if ( null != data.q1t && null != data.q2t && null != data.q3t && null != data.q4t) {
       } else {
@@ -103,6 +104,7 @@ export class TargetSelfTodoComponent extends MyComponent {
     // @ts-ignore
     this.dataSource.getEnddate(label.substring(2)).subscribe (datas => {
       // ******
+        // @ts-ignore
       this.dataSource.dataStatus.anyData.forEach(data => {
       if (data.checked ) {
         if (label.substring(2) == '1' || label.substring(2) == '3' && data.tarTemplate == '2') {
@@ -138,6 +140,7 @@ export class TargetSelfTodoComponent extends MyComponent {
   // delete
   deleteTest(code: string) {
     const param = new Array() ;
+      // @ts-ignore
     this.dataSource.dataStatus.anyData.forEach(data => {
       if (data.checked) {
         const parr = [data.instanceid1, data.instanceid2, data.instanceid3, data.instanceid4];
@@ -204,6 +207,7 @@ export class TargetSelfTodoComponent extends MyComponent {
     } else {
       this.dataSource.dataStatus.anyData = this.tableSource;
     }
+      // @ts-ignore
     this.dataSource.dataStatus.anyData = this.dataSource.dataStatus.anyData.filter( item => {
       // if ((item.employeeName.indexOf(this.filed1 == null ? '' : this.filed1) > -1) && (item.employeeCode .indexOf( this.filed2 == null ? '' : this.filed2) > -1)) {
       //   return true;

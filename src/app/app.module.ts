@@ -14,8 +14,6 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  import {NgxLoadingModule} from 'ngx-loading';
-import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatSortModule, MatTableModule, MatCheckboxModule } from '@angular/material';
 import { NgZorroAntdModule, NZ_I18N, en_US, zh_CN } from 'ng-zorro-antd';
 import { registerLocaleData, HashLocationStrategy } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -100,12 +98,6 @@ registerLocaleData(en);
     FormsModule ,
     JsonpModule,
     HttpClientModule,
-    MatInputModule,
-    MatTableModule,
-    MatCheckboxModule ,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
     BrowserModule,
     RouterModule.forRoot(routerConfig,{useHash: true, onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
