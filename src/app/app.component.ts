@@ -15,7 +15,7 @@ export class AppComponent implements OnInit{
     
 this.interceptorService.getAuth().subscribe(res=>{
   if(!(res.code=="200"&&res.data!=null&&res.data!="null")) {
-  //  this.interceptorService.gotoLogin();
+     //this.interceptorService.gotoLogin();
   }
 })
 

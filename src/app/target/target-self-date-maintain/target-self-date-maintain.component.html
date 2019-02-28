@@ -7,7 +7,8 @@
       (click)="clickSwitch()" [nzLoading]="loading"  [nzControl]="true" nzPlacement="right"
       nzCheckedChildren="是" nzUnCheckedChildren="否"
        [(ngModel)]="dataSource.dataStatus1.anyData"></nz-switch>
-       <button  [disabled]="dataSource.dataStatus1.anyData" nz-button style="margin-bottom:5px;margin-left:75%" (click)="saveSelfDate()" class="editable-add-btn">保存</button>
+       <button  [disabled]="dataSource.dataStatus1.anyData || (dataSource.dataStatus.loading$ | async)" 
+       nz-button style="margin-bottom:5px;margin-left:75%" (click)="saveSelfDate()" class="editable-add-btn">保存</button>
       </div>
 <nz-table 
  #baseTable 

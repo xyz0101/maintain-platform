@@ -14,8 +14,6 @@ import { HttpModule, JsonpModule } from '@angular/http';
 import { FormsModule } from '@angular/forms';
  import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
  import {NgxLoadingModule} from 'ngx-loading';
-import { MatInputModule, MatPaginatorModule, MatProgressSpinnerModule,
-  MatSortModule, MatTableModule, MatCheckboxModule } from '@angular/material';
 import { NgZorroAntdModule, NZ_I18N, en_US, zh_CN } from 'ng-zorro-antd';
 import { registerLocaleData, HashLocationStrategy } from '@angular/common';
 import en from '@angular/common/locales/en';
@@ -35,11 +33,16 @@ import { LocationStrategy } from '@angular/common';
 import { TargetSelfDateMaintainComponent } from './target/target-self-date-maintain/target-self-date-maintain.component';
 import { TargetSelfTodoComponent } from './target/target-self-todo/target-self-todo.component';
 
-import { WxbtestComponent } from './wxbtest/wxbtest.component';
 
 
 import { SalaryMaintainComponent } from './salary/salary-maintain/salary-maintain.component';
+import { SalarySpecialConfigComponent } from './salary/salary-special-config/salary-special-config.component';
+import { SalaryHolidayConfigComponent } from './salary/salary-holiday-config/salary-holiday-config.component';
+import { NoAuthPageComponent } from './no-auth-page/no-auth-page.component';
+import { EvalServiceService } from 'src/app/eval-service/eval-service.service';
+import { TargetService } from 'src/app/target-service/target.service';
     
+registerLocaleData(zh);
 
 registerLocaleData(en);
  const routerConfig:Routes=[
@@ -53,7 +56,10 @@ registerLocaleData(en);
     {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
     {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
     {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]}
-  ], canDeactivate: [RouterGuard]}
+  ], canDeactivate: [RouterGuard]},
+  {path:'salary/special',component:SalarySpecialConfigComponent,canActivate:[RouterGuard]},
+  {path:'salary/holiday',component:SalaryHolidayConfigComponent,canActivate:[RouterGuard]},
+  {path:'noauth',component:NoAuthPageComponent,canActivate:[RouterGuard]}
 ]
 @NgModule({
   declarations: [
@@ -72,9 +78,15 @@ registerLocaleData(en);
     TargetSelfDateMaintainComponent,
     TargetSelfTodoComponent,
 
-    WxbtestComponent
+    SalaryMaintainComponent,
+    SalarySpecialConfigComponent,
+    SalaryHolidayConfigComponent,
+    NoAuthPageComponent ,
+
+
 
     SalaryMaintainComponent 
+
 
    ],
   imports: [
@@ -86,12 +98,6 @@ registerLocaleData(en);
     FormsModule ,
     JsonpModule,
     HttpClientModule,
-    MatInputModule,
-    MatTableModule,
-    MatCheckboxModule ,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
     BrowserModule,
     RouterModule.forRoot(routerConfig,{useHash: true, onSameUrlNavigation: 'reload'}),
     BrowserAnimationsModule,
@@ -100,7 +106,7 @@ registerLocaleData(en);
   providers: [{ provide: NZ_I18N, useValue: zh_CN }, RouterGuard,  {provide: HTTP_INTERCEPTORS, useClass: InterceptorServiceService, multi: true}, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }],
+  },EvalServiceService,TargetService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

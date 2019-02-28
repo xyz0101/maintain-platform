@@ -1,0 +1,63 @@
+
+<div class="ant-card"  style="margin-left:15%;  width:70%">
+    <div class="steps-content step-content"> 
+
+
+    <div style="margin-bottom:5px;">
+    <nz-alert style="width: 300px;float:left;height:40px"  nzMessage="当前日期: {{ selectedDate | date:'yyyy-MM-dd' }}"></nz-alert>
+    <div style="float:right;height:40px">
+      <label>年份选择：</label>
+  <nz-select style="width: 120px;height:40px"  [(ngModel)]="selectedYear" (ngModelChange)="yearChange($event)"  >
+    <nz-option *ngFor="let option of years" [nzValue]="option" [nzLabel]="option"></nz-option>
+  </nz-select>
+  <label>月份选择：</label>
+  <nz-select style="width: 120px;margin-left:10px;height:40px"  [(ngModel)]="selectedMonth" (ngModelChange)="monthChange($event)"  >
+      <nz-option *ngFor="let option of months" [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+    </nz-select>
+  </div>
+  <button nz-button nzType="primary" (click)="seveHoliday()" style="margin-right:50px;float:right">保存</button>
+  </div>
+<nz-calendar nzMode='month' id="cal"  [(ngModel)]="selectedDate"   >
+    <ul *nzDateCell="let date" class="events" style="padding:0px">
+        <ng-container *ngIf="selectedMonth==(date.getMonth())" >
+            <ng-container  >
+              <table style="width:130px;height:60px">
+                <tr >
+                  <td style="width:120px;height:30px" ><nz-badge nzStatus="warning" nzText="是否节假日"></nz-badge></td>
+                  <td>  <nz-switch (ngModelChange)="holidayChange()"  nzSize="small" [nzDisabled]="selectedMonth!=(date.getMonth())"  nzCheckedChildren="是" nzUnCheckedChildren="否" [(ngModel)]="dataMap.get(date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()).dateType"></nz-switch></td>
+                </tr>
+                <tr>
+                    <td style="width:120px;height:30px"><nz-badge nzStatus="warning" nzText="是否带薪"></nz-badge></td>
+                    <td>  <nz-switch (ngModelChange)="salaryChange()"   nzSize="small" [nzDisabled]="selectedMonth!=(date.getMonth())" nzCheckedChildren="是" nzUnCheckedChildren="否" [(ngModel)]="dataMap.get(date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()).salaryDay"></nz-switch></td>
+                  </tr>
+              </table>
+                
+              
+               
+            </ng-container>
+             
+            
+          </ng-container>
+    </ul>
+
+
+<!-- <ng-template #dateCellTpl >
+    <table style="width:130px;height:60px">
+        <tr >
+          <td style="width:120px;height:30px" ><nz-badge nzStatus="warning" nzText="是否是节假日"></nz-badge></td>
+          <td>  <nz-switch [nzDisabled]="activeMonth=="   nzSize="small" ngModel="true"></nz-switch></td>
+        </tr>
+        <tr>
+            <td style="width:120px;height:30px"><nz-badge nzStatus="warning" nzText="是否带薪"></nz-badge></td>
+            <td>  <nz-switch nzSize="small" ngModel="true"></nz-switch></td>
+          </tr>
+      </table>
+</ng-template> -->
+
+
+
+
+  </nz-calendar>
+  </div>
+  </div>
+  
