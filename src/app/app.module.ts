@@ -35,7 +35,6 @@ import { LocationStrategy } from '@angular/common';
 import { TargetSelfDateMaintainComponent } from './target/target-self-date-maintain/target-self-date-maintain.component';
 import { TargetSelfTodoComponent } from './target/target-self-todo/target-self-todo.component';
 
-import { WxbtestComponent } from './wxbtest/wxbtest.component';
 
 
 import { SalaryMaintainComponent } from './salary/salary-maintain/salary-maintain.component';
@@ -59,16 +58,10 @@ registerLocaleData(en);
     {path:'stepthird',component:ReadyStepThirdComponent ,canDeactivate:[RouterGuard],canActivate:[RouterGuard] },
     {path:'stepfourth',component:ReadyStepFourthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]},
     {path:'stepfifth',component:ReadyStepFifthComponent ,canDeactivate:[RouterGuard] ,canActivate:[RouterGuard]}
-
-    
-    
-  ],canDeactivate:[RouterGuard]},
+  ], canDeactivate: [RouterGuard]},
   {path:'salary/special',component:SalarySpecialConfigComponent,canActivate:[RouterGuard]},
   {path:'salary/holiday',component:SalaryHolidayConfigComponent,canActivate:[RouterGuard]},
   {path:'noauth',component:NoAuthPageComponent,canActivate:[RouterGuard]}
-
-  ], canDeactivate: [RouterGuard]}
-
 ]
 @NgModule({
   declarations: [
@@ -90,10 +83,9 @@ registerLocaleData(en);
     SalaryMaintainComponent,
     SalarySpecialConfigComponent,
     SalaryHolidayConfigComponent,
-    NoAuthPageComponent 
+    NoAuthPageComponent ,
 
 
-    WxbtestComponent
 
     SalaryMaintainComponent 
 

@@ -21,9 +21,9 @@ import { HttpResponse } from '@angular/common/http';
 export class EvalServiceService {
 private resData;
 //本地开发模式
-  //  public  baseEvalUrl= "http://127.0.0.1:8700/eval";
+  public  baseEvalUrl= "http://127.0.0.1:8700/eval";
 //测试环境
-public  baseEvalUrl= "http://172.16.134.98:8700/eval";
+// public  baseEvalUrl= "http://172.16.134.98:8700/eval";
 
 
 // 查询年度评价数据

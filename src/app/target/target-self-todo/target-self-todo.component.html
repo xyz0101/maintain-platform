@@ -1,64 +1,112 @@
-<div>
-  <tr><td>
-    <nz-form-item nzFlex  class="ant-advanced-search-form">
-      <nz-form-label [nzFor]="dateSelector">年份选择</nz-form-label><nz-form-control><nz-year-picker id="dateSelector" [(ngModel)]="year" (ngModelChange)="onChange($event)" nzPlaceHolder="Select year"></nz-year-picker>
-    </nz-form-control></nz-form-item>
-  </td>
-  <td>
-      <nz-form-item nzFlex  class="ant-advanced-search-form">
-        <nz-form-label [nzFor]="'field1'">{{searchFields.get('employeeName')}}</nz-form-label>
-        <nz-form-control>
-          <input nz-input placeholder="员工姓名" (keydown)="search($event)" name="filed1" [(ngModel)]="filed1" [attr.id]="'field'+'1'">
-        </nz-form-control>
-      </nz-form-item></td>
-    <td>
-      <nz-form-item nzFlex  class="ant-advanced-search-form">
-        <nz-form-label [nzFor]="'field2'">{{searchFields.get('employeeCode')}}</nz-form-label>
-        <nz-form-control>
-          <input nz-input placeholder="员工编号" (keydown)="search($event)" name="field2" [(ngModel)]="filed2" [attr.id]="'field'+'2'">
-        </nz-form-control>
-      </nz-form-item></td>
-    <td> <nz-form-item nzFlex  class="ant-advanced-search-form">
-      <button nz-button [nzType]="'primary'" (click)="selectByCondition()">搜索</button>
-      <button nz-button (click)="resetForm()">清空</button></nz-form-item></td>
-  </tr></div>
-<div>
-<div><button nz-button nzType="primary" (click)="selectTest('一,1')">推送第一季度自评</button> <button nz-button nzType="primary"  (click)="selectTest('二,2')">推送第二季度自评</button> <button nz-button nzType="primary"  (click)="selectTest('三,3')">推送第三季度自评</button> <button nz-button nzType="primary"  (click)="selectTest('四,4')">推送第四季度自评</button>
-<button nz-button nzType="danger" (click)="deleteTest('一,1')">删除第一季度自评待办</button> <button nz-button nzType="danger" (click)="deleteTest('二,2')">删除第二季度自评待办</button> <button nz-button nzType="danger" (click)="deleteTest('三,3')">删除第三季度自评待办</button> <button nz-button nzType="danger" (click)="deleteTest('四,4')">删除第四季度自评待办</button>
-</div><nz-table
-  #rowSelectionTable
-  [nzData]="dataSource.dataStatus.anyData"
-  [nzPageSize]="11"
-  nzBordered
-  nzSize="smart"
-  nzShowQuickJumper="true"
-  [nzLoading]="dataSource.dataStatus.loading$ | async"
-  (nzPageIndexChange)="refreshStatus()"
-  (nzPageSizeChange)="refreshStatus()">
-  <thead>
-  <tr>
-    <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelection" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
-    <th>员工编号</th>
-    <th>员工姓名</th>
-    <th>员工类型</th>
-    <th>第一季度代办标题</th>
-    <th>第二季度代办(年中)标题</th>
-    <th>第三季度代办标题</th>
-    <th>第四季度代办(年终)标题</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let data of rowSelectionTable.data">
-    <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
-    <td>{{data.employeeCode}}</td>
-    <td>{{data.employeeName}}</td>
-    <td>{{data.tarTemplate}}</td>
-    <td>{{data.q1t}}</td>
-    <td>{{data.q2t}}</td>
-    <td>{{data.q3t}}</td>
-    <td>{{data.q4t}}</td>
-  </tr>
-  </tbody>
-</nz-table>
+<div class="ant-card" style="margin-left:15%;  width:70%">
+  <div class="steps-content step-content">
+
+    <table style="width:100%">
+      <tr style="width:100%">
+        <td style="width:33%">
+          <nz-form-item nzFlex class="ant-advanced-search-form">
+            <nz-form-label [nzFor]="dateSelector">年份选择</nz-form-label>
+            <nz-form-control>
+              <nz-year-picker id="dateSelector" [(ngModel)]="year" (ngModelChange)="onChange($event)" nzPlaceHolder="Select year"></nz-year-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </td>
+        <td style="width:33%">
+          <nz-form-item nzFlex class="ant-advanced-search-form">
+            <nz-form-label [nzFor]="'field1'">{{searchFields.get('employeeName')}}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="员工姓名" (keydown)="search($event)" name="filed1" [(ngModel)]="filed1" [attr.id]="'field'+'1'">
+            </nz-form-control>
+          </nz-form-item>
+        </td>
+        <td style="width:33%">
+          <nz-form-item nzFlex class="ant-advanced-search-form">
+            <nz-form-label [nzFor]="'field2'">{{searchFields.get('employeeCode')}}</nz-form-label>
+            <nz-form-control>
+              <input nz-input placeholder="员工编号" (keydown)="search($event)" name="field2" [(ngModel)]="filed2" [attr.id]="'field'+'2'">
+            </nz-form-control>
+          </nz-form-item>
+        </td>
+
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td>
+          <nz-form-item style="float:right;margin-right:42%" nzFlex class="ant-advanced-search-form">
+            <button nz-button [disabled]='dataSource.dataStatus.loading$ | async' [nzType]="'primary'" (click)="selectByCondition()">搜索</button>
+            <button nz-button  [disabled]='dataSource.dataStatus.loading$ | async'  [nzType]="'primary'" style="margin-left:10px" (click)="resetForm()">清空</button>
+          </nz-form-item>
+        </td>
+      </tr>
+    </table>
+
+    <div>
+      <div>
+        <table style="width:60%">
+          <tr style="width:60%;height:40px">
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('一,1')">推送第一季度自评</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('二,2')">推送第二季度自评</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('三,3')">推送第三季度自评</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('四,4')">推送第四季度自评</button>
+            </td>
+          </tr>
+
+          <tr style="width:60%">
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="danger" (click)="deleteTest('一,1')">删除第一季度自评待办</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="danger" (click)="deleteTest('二,2')">删除第二季度自评待办</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="danger" (click)="deleteTest('三,3')">删除第三季度自评待办</button>
+            </td>
+            <td style="width:25%">
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="danger" (click)="deleteTest('四,4')">删除第四季度自评待办</button>
+            </td>
+
+        </table>
+
+      </div>
+      <nz-table #rowSelectionTable [nzData]="dataSource.dataStatus.anyData" [nzPageSize]="11" nzBordered nzSize="smart" nzShowQuickJumper="true"
+        [nzLoading]="dataSource.dataStatus.loading$ | async" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+        <thead>
+          <tr>
+            <th nzShowCheckbox   [(nzChecked)]="allChecked" 
+              (nzCheckedChange)="checkAll($event)"></th>
+            <th style="width:100px">员工编号</th>
+            <th style="width:100px">员工姓名</th>
+            <th style="width:100px" >员工类型</th>
+            <th style="width:221px">第一季度代办标题</th>
+            <th style="width:221px">第二季度代办(年中)标题</th>
+            <th style="width:221px">第三季度代办标题</th>
+            <th style="width:221px">第四季度代办(年终)标题</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of rowSelectionTable.data">
+            <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus()"></td>
+            <td style="width:100px">{{data.employeeCode}}</td>
+            <td style="width:100px">{{data.employeeName}}</td>
+            <td style="width:100px">模板{{data.tarTemplate}}</td>
+            <td style="width:221px">{{data.q1t==null?'无需自评待办':data.q1t}}</td>
+            <td style="width:221px">{{data.q2t}}</td>
+            <td style="width:221px">{{data.q3t==null?'无需自评待办':data.q3t}}</td>
+            <td style="width:221px">{{data.q4t}}</td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+    <div class="navbar navbar-expand-md bg-white navbar-dark">
+      <span style="color:white">别扯了,这是底线</span>
+    </div>
+  </div>
 </div>
-<div class="navbar navbar-expand-md bg-white navbar-dark"><span style="color:white">别扯了,这是底线</span></div>

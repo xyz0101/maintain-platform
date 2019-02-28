@@ -14,7 +14,8 @@ import {EvalVirtProc} from '../../entity/EvalVirtProc';
   styleUrls: ['./target-self-todo.component.css']
 })
 export class TargetSelfTodoComponent extends MyComponent {
- // public dataSourceE: TargetDataSource;
+  //声明数据源
+  public dataSource :TargetDataSource;
   private filed1: string;
   private filed2: string;
   private tableSource: Object;
@@ -58,7 +59,7 @@ export class TargetSelfTodoComponent extends MyComponent {
   onChange(result: Date): void {
     this.year = result.getFullYear() + '';
     this.loadData();
-    console.log('onChange: ', result);
+    console.log('onChange: ', this.year);
   }
 
   refreshStatus(): void {

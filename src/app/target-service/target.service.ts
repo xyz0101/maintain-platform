@@ -9,7 +9,6 @@ import { RequestOptionsArgs } from '@angular/http';
 
 import { NzMessageService } from 'ng-zorro-antd';
 
-import {WxbServiceService} from '../wxb-service/wxb-service.service';
 
  
 @Injectable({
@@ -27,9 +26,9 @@ export class TargetService extends EvalServiceService{
    
 
 //本地开发模式
-//public  baseEvalUrl= "http://127.0.0.1:8700/target";
+ public  baseEvalUrl= "http://127.0.0.1:8700/target";
 //测试环境
-  public  baseEvalUrl= "http://172.16.134.98:8700/target";
+//  public  baseEvalUrl= "http://172.16.134.98:8700/target";
 //获取所有的时间节点
 private allDatePointUrl = this.baseEvalUrl+"/getAllDatePoint";
 //获取权限是否打开
