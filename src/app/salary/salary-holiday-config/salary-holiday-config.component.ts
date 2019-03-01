@@ -109,17 +109,18 @@ seveHoliday(){
 
 
 //移除选择日期的组件 使用自定义的日期选择器(IE使用)
-    // @ts-ignore
+ 
  removeHeader(): any {
   var interval= setInterval(function(){
 //console.log()
- // @ts-ignore
-// if($('#cal').children().get(0).getAttribute('style')!='display:none'){
-//   console.log($('#cal').children().get(0).getAttribute('style'))
-//    $('#cal').children().get(0).setAttribute('style','display:none')
-// }else{
-//   clearInterval(interval);
-// }
+ var div = document.getElementById('cal');
+ 
+if(div.children.item(0).getAttribute('style')!='display:none'){
+  console.log(div.children.item(0).getAttribute('style'))
+    div.children.item(0).setAttribute('style','display:none')
+}else{
+  clearInterval(interval);
+}
    
 },50)
 }

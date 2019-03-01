@@ -1,8 +1,7 @@
 import { DataStatus } from "src/app/entity/DataStatus";
 import { EvalDataSource } from "src/app/datasource/EvalDataSource";
 import { SalaryService } from "src/app/salary-service/salary.service";
-import { DataSource } from "@angular/cdk/collections";
-import { SalaryHoliday } from "src/app/entity/SalaryHoliday";
+ import { SalaryHoliday } from "src/app/entity/SalaryHoliday";
 
  export class SalaryDataSource  extends EvalDataSource{
     constructor(public salaryService: SalaryService){
