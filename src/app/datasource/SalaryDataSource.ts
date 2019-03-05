@@ -1,7 +1,9 @@
 import { DataStatus } from "src/app/entity/DataStatus";
 import { EvalDataSource } from "src/app/datasource/EvalDataSource";
 import { SalaryService } from "src/app/salary-service/salary.service";
- import { SalaryHoliday } from "src/app/entity/SalaryHoliday";
+
+import { SalaryHoliday } from "src/app/entity/SalaryHoliday";
+import {Observable} from 'rxjs';
 
  export class SalaryDataSource  extends EvalDataSource{
     constructor(public salaryService: SalaryService){
@@ -33,5 +35,30 @@ import { SalaryService } from "src/app/salary-service/salary.service";
         })
     }
 
+    // public loadSpecialHumanItem(empCode: string , salaryItemCode: string): Observable<any> {
+    //     return this.salaryService.getSpecialHumanConfigInfo(empCode,salaryItemCode);
+    // }
+
+    loadSpecialHumanItem(updateMap:Map<string,any>,curList:Array<any>){
+        //开始加载
+        this.dataStatus.loadingEvalSubject.next(true);
+        this.salaryService.getSpecialHumanConfigInfo().subscribe(
+            res=>{
+                res.map(
+                    result=>{
+                        console.log('结果',result)
+                        //判断是否有修改过的内容
+                        var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
+                        //存储数据
+                        this.dataStatus.myData=dataArray;
+                        this.dataStatus.pageDate=result.data;
+                        this.dataStatus.anyData = [{label:'不发该项工资',value:'A'},{label:'试用期不降挡',value:'B'}];
+                        //加载完毕
+                        this.dataStatus.loadingEvalSubject.next(false);
+                    }
+                )
+            }
+        )
+    }
 
 }

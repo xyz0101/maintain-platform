@@ -27,6 +27,10 @@ public  baseEvalUrl= "http://127.0.0.1:8700/salary";
 //  public  baseEvalUrl= "http://172.16.134.98:8700/salary";
 
 public slrHolidayUrl =this.baseEvalUrl+ "/getSlrHoliday";
+// 特殊人员工资信息保存URL
+public saveSlrSpecialhandleURL= this.baseEvalUrl+'/saveSpecialConfigItem';
+// 获取特殊配置人员信息和工资项信息URL
+public getSlrSpecialItemURL= this.baseEvalUrl+'/querySalaryReadyInfo';
 
 public getSlrHoliday(yearMonth:string):Observable<Result[]>{
   const params = new HttpParams().set("yearMonth",yearMonth)
@@ -39,18 +43,32 @@ public getSlrHoliday(yearMonth:string):Observable<Result[]>{
   )
 }
 
+/**
+ * 获取特殊人员配置信息
+ */
+public getSpecialHumanConfigInfo( ): Observable<Result[]> {
+  const params = new HttpParams();
+  const HttpOptions={
+    headers:this.headers,
+    params:params
+  }
+  return this.http.post<Result[]>(this.getSlrSpecialItemURL,null,HttpOptions).pipe(
+    catchError(this.handleError)
+  );
+
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
+/**
+ * 保存修改信息
+ */
+public saveSpecialUpdateInfo(updateList: string,deleteList: string,addList: string): Observable<Result[]> {
+  const params = new HttpParams().set("updateList",updateList).set("deleteList",deleteList).set("addList",addList)
+  const HttpOptions = {
+    headers: this.headers,
+    params: params
+  }
+  return this.http.post<Result[]>(this.saveSlrSpecialhandleURL, null , HttpOptions).pipe();
+}
 
 }
