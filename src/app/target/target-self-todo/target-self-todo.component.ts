@@ -35,11 +35,11 @@ export class TargetSelfTodoComponent extends MyComponent {
   //全选样式 控制
   indeterminate = false;
 
-  /**
+/**
    * 根据年份获取数据
    * @param result 
-   */
-  onChange(result: Date): void {
+   */ 
+   onChange(result: Date): void {
     this.year = result.getFullYear() + '';
     this.loadData();
     console.log('onChange: ', this.year);
@@ -48,6 +48,7 @@ export class TargetSelfTodoComponent extends MyComponent {
   refreshStatus(): void {
       // @ts-ignore
     const allChecked = this.dataSource.dataStatus.anyData.every(value => value.checked === true);
+    // @ts-ignore
     const allUnChecked = this.dataSource.dataStatus.anyData.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
@@ -84,7 +85,7 @@ export class TargetSelfTodoComponent extends MyComponent {
     //初始化刷新全选状态
     this. refreshStatus();
   }
-
+  
   /**
    * 推送代办
    * @param label 
@@ -202,14 +203,7 @@ export class TargetSelfTodoComponent extends MyComponent {
       this.dataSource.dataStatus.anyData = this.tableSource;
     }
       // @ts-ignore
-    this.dataSource.dataStatus.anyData = this.dataSource.dataStatus.anyData.filter( item => {
-      // if ((item.employeeName.indexOf(this.employeeName == null ? '' : this.employeeName) > -1) && (item.employeeCode .indexOf( this.employeeCode == null ? '' : this.employeeCode) > -1)) {
-      //   return true;
-      // } else if (item.employeeName.indexOf(this.employeeName == null ? '' : this.employeeName) > -1) {
-      //   return true;
-      // } else if (item.employeeCode .indexOf( this.employeeCode == null ? '' : this.employeeCode) > -1) {
-      //   return true;
-      // }
+     this.dataSource.dataStatus.anyData = this.dataSource.dataStatus.anyData.filter( item => {
 
       if(this.employeeName != ''&&this.employeeCode!= ''&&this.employeeCode!=null&&this.employeeName!=null){
         if ((item.employeeName.indexOf(this.employeeName) > -1) && (item.employeeCode .indexOf( this.employeeCode) > -1)){
@@ -235,7 +229,7 @@ export class TargetSelfTodoComponent extends MyComponent {
     })
     return null;
   }
-
+  
   /**
    * 键盘回车提交事件
    * @param event 
