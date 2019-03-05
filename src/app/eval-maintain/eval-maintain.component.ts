@@ -10,7 +10,6 @@ import { Result } from 'src/app/entity/Result';
 import { AfterViewInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { tap } from 'rxjs/operators';
-import { SelectionModel } from '@angular/cdk/collections';
 import { FormGroup, FormBuilder , FormControl} from '@angular/forms';
 import { NzModalService, NzMessageService } from 'ng-zorro-antd';
 import { MyComponent } from 'src/app/comps/MyComponent';
