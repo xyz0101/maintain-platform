@@ -6,14 +6,6 @@
     <form nz-form [nzLayout]="'inline'" [formGroup]="validateForm">
       <nz-form-item *ngIf="validateForm!=undefined &&validateForm!=null&&validateForm.value!=null&&validateForm.value.dataDate!=null " >
           <nz-form-control>
-            <!-- <nz-upload   [nzAction]="uploadDistQuotaUrl" [nzFileList]="fileList" nzMultiple="false" nzWithCredentials="true"
-              nzLimit="1" nzName="excelFile" nzShowUploadList="false" [nzFilter]="filters" (nzChange)="handleChange($event)">
-              <button nz-button style="margin-bottom:5px;">
-                <i nz-icon type="upload"></i>
-                <span>上传Excel</span>
-              </button>
-            </nz-upload> -->
-
             <nz-upload   [nzAction]="uploadDistQuotaUrl"  [nzCustomRequest] ="customReq"    >
               <button nz-button style="margin-bottom:5px;">
                 <i nz-icon type="upload"></i>
@@ -28,7 +20,6 @@
            [attr.id]="control.field" (ngModelChange)="dateChange($event)" nzFormat="yyyy-MM-dd"></nz-date-picker>
         </nz-form-control>
       </nz-form-item>
-
       <nz-form-item>
         <nz-form-control>
           <button *ngIf="showSearch" nz-button nzType="primary" (click)="searchQuota()" nzSearch>搜索</button>
@@ -41,9 +32,7 @@
           </nz-popconfirm>
         </nz-form-control>
       </nz-form-item>
-
-  
-      <nz-form-item>
+      <nz-form-item   *ngIf="validateForm!=undefined &&validateForm!=null&&validateForm.value!=null&&validateForm.value.dataDate!=null "    >
         <nz-form-control>
           <button nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()">
             <i nz-icon type="download"></i>导出Excel</button>

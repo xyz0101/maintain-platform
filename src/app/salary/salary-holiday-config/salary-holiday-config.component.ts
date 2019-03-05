@@ -59,7 +59,7 @@ export class SalaryHolidayConfigComponent extends MyComponent {
       this.years[3]=curDate.getFullYear()+1
       this.years[4]=curDate.getFullYear()+2
       this.selectedYear=curDate.getFullYear();
-      this.selectedMonth=curDate.getMonth()+1;
+      this.selectedMonth=curDate.getMonth();
       this.initDate();
       
       //移除选择日期的组件 使用自定义的日期选择器
@@ -74,12 +74,13 @@ export class SalaryHolidayConfigComponent extends MyComponent {
    * 初始化选择的日期，并加载数据
    */
   initDate(){
+    
     console.log( "当前月份==>"+this.selectedMonth)
     for(let i=1;i<=31;i++){
-      if(this.dataMap.get(this.selectedYear+"-"+this.selectedMonth+"-"+i)==null){
+    //  if(this.dataMap.get(this.selectedYear+"-"+this.selectedMonth+"-"+i)==null){
           this.dataMap.set(this.selectedYear+"-"+this.selectedMonth+"-"+i ,
       new SalaryHoliday())
-      }
+     // }
     
   }
  
@@ -100,7 +101,26 @@ yearChange(event){
 }
 
 seveHoliday(){
-   
+     //获取当前时间
+     let curDate= new Date(this.selectedYear,this.selectedMonth+1,0);
+     //获取当月天数
+     var maxDays= curDate.getDate();
+
+  
+    for(let i=1;i<=maxDays;i++){
+      this.updateList[i-1]=this.dataMap.get(this.selectedYear+'-'+this.selectedMonth+'-'+i);
+    }
+    console.log('保存----------',  this.updateList)
+    this.salaryService.saveSlrHoliday(JSON.stringify(this.updateList)).subscribe(res=>{
+      //清空修改的数据
+      this.updateList=this.updateList.filter(item=> item==null )
+      this.initDate();
+      this.success("保存成功！")
+    },
+    error=>{
+      this.error("保存失败！")
+    })
+
  }
 
 

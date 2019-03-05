@@ -1,7 +1,7 @@
 <div class="steps-content step-content">
     <div class="table-operations">
- <button nz-button style="margin-bottom:5px" (click)="addRow()" class="editable-add-btn">添加</button>
- <button nz-button style="margin-bottom:5px;margin-left:88%" (click)="saveDeptRegion()" class="editable-add-btn">保存</button>
+ <button nz-button  [disabled]='dataSource.dataStatus.loading$ | async' style="margin-bottom:5px" (click)="addRow()" class="editable-add-btn">添加</button>
+ <button nz-button  [disabled]='dataSource.dataStatus.loading$ | async' style="margin-bottom:5px;margin-left:78%" (click)="saveDeptRegion()" class="editable-add-btn">保存</button>
  </div>
     <nz-table 
     #editRowTable 
@@ -55,7 +55,7 @@
      <form  nz-form  [nzLayout]="'inline'" [formGroup]="validateForm"   >
         <nz-form-item>
         <nz-form-control>
-            <button     nz-button (click)="addRow1()"  >添加</button>
+            <button   [disabled]='dataSource.dataStatus1.loading$ | async'   nz-button (click)="addRow1()"  >添加</button>
         </nz-form-control>
         </nz-form-item>
          <nz-form-item     *ngFor="let control of controlArray"   >
@@ -66,7 +66,7 @@
      
       <nz-form-item>
       <nz-form-control>
-    <button   *ngIf="showSearch" nz-button nzType="primary"   (click)="searchDtl()"  nzSearch>搜索</button>
+    <button   *ngIf="showSearch" nz-button nzType="primary"   [disabled]='dataSource.dataStatus1.loading$ | async'  (click)="searchDtl()"  nzSearch>搜索</button>
     </nz-form-control>
     </nz-form-item>
     <nz-form-item>
@@ -76,9 +76,9 @@
     </nz-popconfirm>
     </nz-form-control>
     </nz-form-item>
-      <nz-form-item style="margin-left:61% " >
+      <nz-form-item style="margin-left:45% " >
         <nz-form-control>
-    <button nz-button (click)="saveDeptRegionDtl()" class="editable-add-btn">保存</button>
+    <button nz-button (click)="saveDeptRegionDtl()"  [disabled]='dataSource.dataStatus.loading$ | async' class="editable-add-btn">保存</button>
   </nz-form-control>
 </nz-form-item>
     </form>

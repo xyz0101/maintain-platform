@@ -35,9 +35,9 @@
         </div>
         <div nz-row>
           <div nz-col [nzSpan]="24" style="text-align: right;">
-            <button style="margin-left:15px" nz-button [nzType]="'primary'" (click)="searchEval()" >搜索</button>
+            <button  [disabled]='dataSource.dataStatus.loading$ | async' style="margin-left:15px" nz-button [nzType]="'primary'" (click)="searchEval()" >搜索</button>
             
-            <button style="margin-left:15px" nz-button (click)="resetForm()">重置</button>
+            <button  [disabled]='dataSource.dataStatus.loading$ | async' style="margin-left:15px" nz-button (click)="resetForm()">重置</button>
             <a style="margin-left:15px;font-size:15px;color:blue" (click)="toggleCollapse()">
               {{isCollapse?'展开':'收起'}}
               <i nz-icon style="vertical-align:0em" [type]="isCollapse?'down':'up'"></i>

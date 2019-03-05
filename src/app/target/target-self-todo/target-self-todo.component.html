@@ -46,16 +46,16 @@
         <table style="width:60%">
           <tr style="width:60%;height:40px">
             <td style="width:25%">
-              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('一,1')">推送第一季度自评</button>
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('一,1')">推送第一季度自评待办</button>
             </td>
             <td style="width:25%">
-              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('二,2')">推送第二季度自评</button>
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('二,2')">推送第二季度自评待办</button>
             </td>
             <td style="width:25%">
-              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('三,3')">推送第三季度自评</button>
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" (click)="selectTest('三,3')">推送第三季度自评待办</button>
             </td>
             <td style="width:25%">
-              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('四,4')">推送第四季度自评</button>
+              <button style="width:180px" [disabled]='dataSource.dataStatus.loading$ | async'  nz-button nzType="primary" (click)="selectTest('四,4')">推送第四季度自评待办</button>
             </td>
           </tr>
 
@@ -76,11 +76,11 @@
         </table>
 
       </div>
-      <nz-table #rowSelectionTable [nzData]="dataSource.dataStatus.anyData" [nzPageSize]="11" nzBordered nzSize="smart" nzShowQuickJumper="true"
+      <nz-table #rowSelectionTable [nzData]="dataSource.dataStatus.anyData" [nzPageSize]="11" nzBordered nzSize="small" nzShowQuickJumper="true"
         [nzLoading]="dataSource.dataStatus.loading$ | async" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
         <thead>
           <tr>
-            <th nzShowCheckbox   [(nzChecked)]="allChecked" 
+            <th nzShowCheckbox [nzIndeterminate]="indeterminate"  [(nzChecked)]="allChecked" 
               (nzCheckedChange)="checkAll($event)"></th>
             <th style="width:100px">员工编号</th>
             <th style="width:100px">员工姓名</th>

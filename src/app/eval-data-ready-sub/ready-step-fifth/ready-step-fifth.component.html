@@ -1,7 +1,7 @@
 
 <div class="steps-content step-content"> 
     <div class="table-operations">
-         <button nz-button style="margin-bottom:5px;margin-left:88%" (click)="saveOrgLeaderList()" class="editable-add-btn">保存</button>
+         <button nz-button   [disabled]='dataSource.dataStatus.loading$ | async' style="margin-bottom:5px;margin-left:88%" (click)="saveOrgLeaderList()" class="editable-add-btn">保存</button>
         </div>
  <nz-table 
  #baseTable 

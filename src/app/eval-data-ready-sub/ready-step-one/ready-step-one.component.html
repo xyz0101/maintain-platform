@@ -19,14 +19,14 @@
   <nz-upload  style="float:left"
         [nzAction]="evalService.postEmpRangeUrl" [nzCustomRequest] ="customReq"
       >
-        <button nz-button style="margin-bottom:5px">
+        <button  [disabled]='dataSource.dataStatus.loading$ | async' nz-button style="margin-bottom:5px">
           <i nz-icon type="upload"></i><span>上传Excel</span>
         </button>
        
       </nz-upload>
 
       
-      <button nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()" ><i nz-icon type="download"></i>导出Excel</button>
+      <button  [disabled]='dataSource.dataStatus.loading$ | async' nz-button nzType="primary" style="margin-bottom:5px;margin-left:5px " (click)="downloadExcel()" ><i nz-icon type="download"></i>导出Excel</button>
     </div>
   
     <nz-table 

@@ -29,31 +29,10 @@ export class TargetSelfTodoComponent extends MyComponent {
   private year = '2018';
   private data: Object;
   private controlData: Array<any>;
-  listOfSelection = [
-    {
-      text    : 'Select All Row',
-      onSelect: () => {
-        this.checkAll(true);
-      }
-    },
-    {
-      text    : 'Select Odd Row',
-      onSelect: () => {
-        this.dataSet.forEach((data, index) => data.checked = index % 2 !== 0);
-        this.refreshStatus();
-      }
-    },
-    {
-      text    : 'Select Even Row',
-      onSelect: () => {
-        this.dataSet.forEach((data, index) => data.checked = index % 2 === 0);
-        this.refreshStatus();
-      }
-    }
-  ];
 
-  allChecked = false;
+  private allChecked = false;
   dataSet: Array<{ name: string; age: number; address: string; checked: boolean }> = [];
+  //全选样式 控制
   indeterminate = false;
 
   onChange(result: Date): void {
@@ -63,8 +42,9 @@ export class TargetSelfTodoComponent extends MyComponent {
   }
 
   refreshStatus(): void {
-    const allChecked = this.dataSet.every(value => value.checked === true);
-    const allUnChecked = this.dataSet.every(value => !value.checked);
+      // @ts-ignore
+    const allChecked = this.dataSource.dataStatus.anyData.every(value => value.checked === true);
+    const allUnChecked = this.dataSource.dataStatus.anyData.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
   }
@@ -97,6 +77,8 @@ export class TargetSelfTodoComponent extends MyComponent {
     super.initSearch();
     // 初始化数据表
     super.initTable(new TargetDataSource(this.targetService));
+    //初始化刷新全选状态
+    this. refreshStatus();
   }
 
   selectTest(label: string) {

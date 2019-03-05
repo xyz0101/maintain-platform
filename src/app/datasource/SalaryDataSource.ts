@@ -18,15 +18,19 @@ import { SalaryService } from "src/app/salary-service/salary.service";
         this.dataStatus.loadingEvalSubject.next(true);
         this.salaryService.getSlrHoliday(yearMonth).subscribe(res=>{
             res.map(data=>{
-               console.log(data)
+               console.log(data) 
              
                 this.dataStatus.myData = data.data.listData;
                 this.dataStatus.myData.forEach(item=>{
-                     
-                     dataMap.get( item.key ).dateType=item.dateType=="true"
-                     dataMap.get( item.key ).salaryDay=item.salaryDay=="true"
+                     if(item.key!=null){
+                        dataMap.get( item.key ).dateType=item.dateType=="true"
+                        dataMap.get( item.key ).salaryDay=item.salaryDay=="true"
+                        dataMap.get( item.key ).key= item.key
+                        dataMap.get( item.key ).dateDate=null;
+                     }
+                   
                   })
-                  console.log('数据====》',    dataMap ) 
+                  console.log('数据=======》',    this.dataStatus.myData ) 
                 this.dataStatus.loadingEvalSubject.next(false);
             })
 

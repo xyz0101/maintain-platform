@@ -21,22 +21,18 @@
     <ul *nzDateCell="let date" class="events" style="padding:0px">
         <ng-container *ngIf="selectedMonth==(date.getMonth())" >
             <ng-container  >
-              <table style="width:130px;height:60px">
+              <table style="width:100%;height:100%">
                 <tr >
-                  <td style="width:120px;height:30px" ><nz-badge nzStatus="warning" nzText="是否节假日"></nz-badge></td>
+                  <td nzSize="small" style="width:70%;height:30%" ><nz-badge nzStatus="warning" nzText="是否节假日"></nz-badge></td>
                   <td>  <nz-switch (ngModelChange)="holidayChange()"  nzSize="small" [nzDisabled]="selectedMonth!=(date.getMonth())"  nzCheckedChildren="是" nzUnCheckedChildren="否" [(ngModel)]="dataMap.get(date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()).dateType"></nz-switch></td>
                 </tr>
                 <tr>
-                    <td style="width:120px;height:30px"><nz-badge nzStatus="warning" nzText="是否带薪"></nz-badge></td>
+                    <td nzSize="small"style="width:70%;height:30%" ><nz-badge 
+                       nzStatus="warning" nzText="是否带薪"></nz-badge></td>
                     <td>  <nz-switch (ngModelChange)="salaryChange()"   nzSize="small" [nzDisabled]="selectedMonth!=(date.getMonth())" nzCheckedChildren="是" nzUnCheckedChildren="否" [(ngModel)]="dataMap.get(date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()).salaryDay"></nz-switch></td>
                   </tr>
               </table>
-                
-              
-               
             </ng-container>
-             
-            
           </ng-container>
     </ul>
 
