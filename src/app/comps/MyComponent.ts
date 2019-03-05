@@ -29,7 +29,7 @@ export abstract class MyComponent implements    OnInit {
     throw new Error("Method not implemented.");
   }
   //延迟时间
-  public timeOutNum=200;
+  public timeOutNum=300;
   //输入员工的自动提示
  public options=[];
  //当前页码
@@ -246,7 +246,7 @@ initTable(dataSource: EvalDataSource) {
       //  console.log("value====》", dataStatus.myData[i] )
          if(key!=   JSON.stringify (dataStatus.myData[i])){
            if(dataStatus.myData[i]!=undefined){
-            //  console.log("发生了变化")
+            //   console.log("发生了变化")
             //  console.log("key====》"+key)
             //  console.log("value====》"+JSON.stringify (dataStatus.myData[i]))
              updateMap.set(key,dataStatus.myData[i]);
@@ -254,7 +254,7 @@ initTable(dataSource: EvalDataSource) {
            
          }else{
           // console.log("变化复原")
-          //console.log("key====》"+key)
+          // console.log("key====》"+key)
             updateMap.delete(key);
          }
      } 

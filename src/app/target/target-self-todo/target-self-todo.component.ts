@@ -16,8 +16,8 @@ import {EvalVirtProc} from '../../entity/EvalVirtProc';
 export class TargetSelfTodoComponent extends MyComponent {
   //声明数据源
   public dataSource :TargetDataSource;
-  private filed1: string;
-  private filed2: string;
+  private employeeName: string;
+  private employeeCode: string;
   private tableSource: Object;
   private flag: boolean;
   // 注入路由信息,以及评价的服务
@@ -56,6 +56,10 @@ export class TargetSelfTodoComponent extends MyComponent {
   dataSet: Array<{ name: string; age: number; address: string; checked: boolean }> = [];
   indeterminate = false;
 
+  /**
+   * 根据年份获取数据
+   * @param result 
+   */
   onChange(result: Date): void {
     this.year = result.getFullYear() + '';
     this.loadData();
@@ -99,6 +103,10 @@ export class TargetSelfTodoComponent extends MyComponent {
     super.initTable(new TargetDataSource(this.targetService));
   }
 
+  /**
+   * 推送代办
+   * @param label 
+   */
   selectTest(label: string) {
     const params = new Array();
     // @ts-ignore
@@ -137,7 +145,10 @@ export class TargetSelfTodoComponent extends MyComponent {
        // ***
     });
   }
-  // delete
+  /**
+   * 删除待办
+   * @param code 
+   */
   deleteTest(code: string) {
     const param = new Array() ;
       // @ts-ignore
@@ -196,10 +207,11 @@ export class TargetSelfTodoComponent extends MyComponent {
     });
   }
   resetForm(): void {
-    this.filed1 = '';
-    this.filed2 = '';
+    this.employeeName = '';
+    this.employeeCode = '';
   }
-  // query
+
+  // query，按条件检索
   selectByCondition(): string {
     if ( !this.flag) {
       this.tableSource = this.dataSource.dataStatus.anyData;
@@ -209,28 +221,28 @@ export class TargetSelfTodoComponent extends MyComponent {
     }
       // @ts-ignore
     this.dataSource.dataStatus.anyData = this.dataSource.dataStatus.anyData.filter( item => {
-      // if ((item.employeeName.indexOf(this.filed1 == null ? '' : this.filed1) > -1) && (item.employeeCode .indexOf( this.filed2 == null ? '' : this.filed2) > -1)) {
+      // if ((item.employeeName.indexOf(this.employeeName == null ? '' : this.employeeName) > -1) && (item.employeeCode .indexOf( this.employeeCode == null ? '' : this.employeeCode) > -1)) {
       //   return true;
-      // } else if (item.employeeName.indexOf(this.filed1 == null ? '' : this.filed1) > -1) {
+      // } else if (item.employeeName.indexOf(this.employeeName == null ? '' : this.employeeName) > -1) {
       //   return true;
-      // } else if (item.employeeCode .indexOf( this.filed2 == null ? '' : this.filed2) > -1) {
+      // } else if (item.employeeCode .indexOf( this.employeeCode == null ? '' : this.employeeCode) > -1) {
       //   return true;
       // }
 
-      if(this.filed1 != ''&&this.filed2!= ''&&this.filed2!=null&&this.filed1!=null){
-        if ((item.employeeName.indexOf(this.filed1) > -1) && (item.employeeCode .indexOf( this.filed2) > -1)){
+      if(this.employeeName != ''&&this.employeeCode!= ''&&this.employeeCode!=null&&this.employeeName!=null){
+        if ((item.employeeName.indexOf(this.employeeName) > -1) && (item.employeeCode .indexOf( this.employeeCode) > -1)){
           return true;
         }else{
           return false
         }
-      }else if(this.filed1 != ''&&this.filed1 != null){
-        if (item.employeeName.indexOf(this.filed1) > -1) {
+      }else if(this.employeeName != ''&&this.employeeName != null){
+        if (item.employeeName.indexOf(this.employeeName) > -1) {
           return true;
         }else{
           return false
         }
-      }else if(this.filed2 != ''&&this.filed2 != null){
-          if (item.employeeCode.indexOf(this.filed2) > -1) {
+      }else if(this.employeeCode != ''&&this.employeeCode != null){
+          if (item.employeeCode.indexOf(this.employeeCode) > -1) {
             return true;
           }else{
             return false
@@ -242,6 +254,10 @@ export class TargetSelfTodoComponent extends MyComponent {
     return null;
   }
 
+  /**
+   * 键盘回车提交事件
+   * @param event 
+   */
   search(event) {
     if (event.keyCode == 13) {
       this.selectByCondition();
