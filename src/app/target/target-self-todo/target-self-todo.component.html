@@ -15,7 +15,7 @@
           <nz-form-item nzFlex class="ant-advanced-search-form">
             <nz-form-label [nzFor]="'field1'">{{searchFields.get('employeeName')}}</nz-form-label>
             <nz-form-control>
-              <input nz-input placeholder="员工姓名" (keydown)="search($event)" name="filed1" [(ngModel)]="filed1" [attr.id]="'field'+'1'">
+              <input nz-input placeholder="员工姓名" (keydown)="search($event)" name="employeeName" [(ngModel)]="employeeName" [attr.id]="'field'+'1'">
             </nz-form-control>
           </nz-form-item>
         </td>
@@ -23,7 +23,7 @@
           <nz-form-item nzFlex class="ant-advanced-search-form">
             <nz-form-label [nzFor]="'field2'">{{searchFields.get('employeeCode')}}</nz-form-label>
             <nz-form-control>
-              <input nz-input placeholder="员工编号" (keydown)="search($event)" name="field2" [(ngModel)]="filed2" [attr.id]="'field'+'2'">
+              <input nz-input placeholder="员工编号" (keydown)="search($event)" name="employeeCode" [(ngModel)]="employeeCode" [attr.id]="'field'+'2'">
             </nz-form-control>
           </nz-form-item>
         </td>
