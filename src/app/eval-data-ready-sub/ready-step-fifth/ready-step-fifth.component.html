@@ -12,8 +12,9 @@
   nzShowQuickJumper="true"
    nzTitle ="部门对应部门正职"
    nzFrontPagination="true"
-   [(nzData)]="dataSource.dataStatus.myData"
-   nzPageSize="13"
+   [(nzData)]="dataSource.dataStatus.tableData"
+   [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize"
+   [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
  
   >
  <thead>
@@ -27,7 +28,7 @@
   </tr>
  </thead>
      <tr *ngFor="let data of baseTable.data;let i = index">
-       <td>{{i+1}}</td>
+       <td>{{(i+1)+((dataSource.dataStatus.pageInfo.curPage-1)*dataSource.dataStatus.pageInfo.pageSize)  }}</td>
        <td>{{data.organizationCode}}</td>
        <td>{{data.organizationName}}</td>
        <td>

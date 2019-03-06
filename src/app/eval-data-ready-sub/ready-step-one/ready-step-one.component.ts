@@ -45,31 +45,31 @@ export class ReadyStepOneComponent  extends MyComponent {
  * 搜索编号
  */
 searchUICode(){
-  this.dataSource.dataStatus.myData = this.dataSource.dataStatus.evalMgrSubject.value;
+  this.dataSource.dataStatus.tableData = this.dataSource.dataStatus.evalMgrSubject.value;
   const data = new Array();
   var j=0;
-    for(var i=0;i<this.dataSource.dataStatus.myData.length;i++){
-      if(this.dataSource.dataStatus.myData[i].employeeCode.indexOf(this.searchValueCode)!==-1){
-        data[j] =this.dataSource.dataStatus.myData[i];
+    for(var i=0;i<this.dataSource.dataStatus.tableData.length;i++){
+      if(this.dataSource.dataStatus.tableData[i].employeeCode.indexOf(this.searchValueCode)!==-1){
+        data[j] =this.dataSource.dataStatus.tableData[i];
         j++;
       }
     }
-  this.dataSource.dataStatus.myData = data;
+  this.dataSource.dataStatus.tableData = data;
    }
    /**
  * 搜索姓名
  */
 searchUIName(){
-  this.dataSource.dataStatus.myData = this.dataSource.dataStatus.evalMgrSubject.value;
+  this.dataSource.dataStatus.tableData = this.dataSource.dataStatus.evalMgrSubject.value;
   const data = new Array();
   var j=0;
-    for(var i=0;i<this.dataSource.dataStatus.myData.length;i++){
-      if(this.dataSource.dataStatus.myData[i].employeeName.indexOf(this.searchValueName)!==-1){
-        data[j] =this.dataSource.dataStatus.myData[i];
+    for(var i=0;i<this.dataSource.dataStatus.tableData.length;i++){
+      if(this.dataSource.dataStatus.tableData[i].employeeName.indexOf(this.searchValueName)!==-1){
+        data[j] =this.dataSource.dataStatus.tableData[i];
         j++;
       }
     }
-  this.dataSource.dataStatus.myData = data;
+  this.dataSource.dataStatus.tableData = data;
    }
  /*************************文件操作**********************************/ 
  /**

@@ -40,7 +40,7 @@ public loading = false;
  * 改变行
  */
 onChange(){
-  console.log(this.dataSource.dataStatus1.myData)
+  console.log(this.dataSource.dataStatus1.tableData)
   console.log("改变")
   this.updateList=  this.changeStatu(this.curList,this.updateMap,this.updateList,this.dataSource.dataStatus)
   }

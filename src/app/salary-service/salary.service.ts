@@ -22,9 +22,9 @@ export class SalaryService extends EvalServiceService{
   
 
 //本地开发模式
-public  baseEvalUrl= "http://127.0.0.1:8700/salary";
+ public  baseEvalUrl= "http://127.0.0.1:8700/salary";
 //测试环境
-//  public  baseEvalUrl= "http://172.16.134.98:8700/salary";
+ //  public  baseEvalUrl= "http://172.16.134.98:8700/salary";
 //获取假期的地址
 public slrHolidayUrl =this.baseEvalUrl+ "/getSlrHoliday";
 // 特殊人员工资信息保存URL

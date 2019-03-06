@@ -76,7 +76,7 @@
         </table>
 
       </div>
-      <nz-table #rowSelectionTable [nzData]="dataSource.dataStatus.anyData" [nzPageSize]="11" nzBordered nzSize="small" nzShowQuickJumper="true"
+      <nz-table #rowSelectionTable [nzData]="dataSource.dataStatus.tableData" [nzPageSize]="11" nzBordered nzSize="small" nzShowQuickJumper="true"
         [nzLoading]="dataSource.dataStatus.loading$ | async" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
         <thead>
           <tr>

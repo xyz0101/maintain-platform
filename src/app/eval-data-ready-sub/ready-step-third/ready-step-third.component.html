@@ -50,7 +50,8 @@
 
   </div>
   <nz-table #baseTable nzBordered nzSize="small" [nzLoading]="dataSource.dataStatus.loading$ | async" nzNoResult="无数据,请选择正确的年份并点击搜索按钮"
-    nzShowQuickJumper="true" nzTitle="评语分布率调整" nzFrontPagination="true" [(nzData)]="dataSource.dataStatus.myData" nzPageSize="13">
+    nzShowQuickJumper="true" nzTitle="评语分布率调整" nzFrontPagination="true" [(nzData)]="dataSource.dataStatus.tableData"  [(nzPageSize)]="pageSize"
+    [(nzPageIndex)]="pageIndex" >
     <thead>
       <tr>
         <th>#</th>
@@ -66,7 +67,7 @@
       </tr>
     </thead>
     <tr *ngFor="let data of baseTable.data;let i = index">
-      <td>{{i+1}}</td>
+      <td>{{(i+1)+((dataSource.dataStatus.pageInfo.curPage-1)*dataSource.dataStatus.pageInfo.pageSize)  }}</td>
       <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drCode" >  </td> -->
       <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drName" >  </td> -->
       <td style="width:200px">

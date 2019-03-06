@@ -29,11 +29,11 @@ export class TargetDataSource extends EvalDataSource{
         this.dataStatus.loadingEvalSubject.next(true);
         this.targetService.getAllDatePoint().subscribe(res=>{
             res.map(result=>{
-                this.dataStatus.pageInfo=result.data.pageInfo;
+                
                 //判断是否有修改过的内容
                 var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
                 this.dataStatus.evalMgrSubject.next(dataArray);
-                this.dataStatus.myData=dataArray;
+                this.dataStatus.tableData=dataArray;
                 console.log("loadAllDatePoint-----")
                 console.log(result.data.listData);
                 this.dataStatus.length=result.data.listData.length;
@@ -45,18 +45,18 @@ export class TargetDataSource extends EvalDataSource{
     loadTodoList(year: string) {
       this.dataStatus.loadingEvalSubject.next(true);
       this.targetService.queryEvalInfo(year).subscribe(data => {
-        // @ts-ignore
-        this.dataStatus.anyData = data;
+        
+        this.dataStatus.tableData = data;
         this.dataStatus.loadingEvalSubject.next(false);
       });
     }
 
     // insert
-   // @ts-ignore
+   
    insertBpmVirtRecord(param: string): Observable<any> {
     return this.targetService.insertRecodeEval(param);
     // .subscribe(data => {
-    //   // @ts-ignore
+    //   
     //   this.dataStatus.length = data;
     //   alert(data);
     // });

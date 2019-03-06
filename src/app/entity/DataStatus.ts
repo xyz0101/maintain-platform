@@ -6,10 +6,11 @@ import { PageData } from "src/app/entity/PageData";
  */
 export class DataStatus {
     public evalMgrSubject = new BehaviorSubject<any[]>([]);
-    public myData = new Array<any>();
+    public tableData = new Array<any>();
     public anyData =new Object();
     public loadingEvalSubject = new BehaviorSubject<boolean>(false);
-    public pageInfo = new PageInfo();
+    public pageInfo = new PageInfo(1,13);
+    
     public pageDate = new PageData();
     public loading$ = this.loadingEvalSubject.asObservable();
     public length: number;

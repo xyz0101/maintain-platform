@@ -55,7 +55,7 @@ export class SalarySpecialConfigComponent extends MyComponent implements OnInit 
    })
     }, this.timeOutNum);  
     
-    //console.log('curList',this.dataSource.dataStatus.myData);  
+    //console.log('curList',this.dataSource.dataStatus.tableData);  
     this.updateList=  this.changeStatu(this.curList,this.updateMap,this.updateList,this.dataSource.dataStatus)
     console.log('updateList',this.updateList);  
 
@@ -67,14 +67,19 @@ export class SalarySpecialConfigComponent extends MyComponent implements OnInit 
  */
   addRecord(): void{
     const slrSpecialList= new SlrSpecialList();
+   //这个赋值顺序会影响到是否有重复数据的判断
+   //因此顺序不能改变
+    slrSpecialList.specialType='';
     slrSpecialList.employeeCode='';
-    slrSpecialList.employeeName='';
     slrSpecialList.salaryCode='';
     slrSpecialList.salaryName='';
-    slrSpecialList.specialType='';
+    slrSpecialList.employeeName='';
+    slrSpecialList.specialId=new Date().getTime()
 
     this.addUIRow(this.addUIList,this.dataSource.dataStatus,slrSpecialList);
 
+
+    
   }
 
   /**
@@ -82,7 +87,7 @@ export class SalarySpecialConfigComponent extends MyComponent implements OnInit 
    * @param data
    */
   deleteCurRecord(data){
-    this.deleteRow(this.deleteList,this.dataSource.dataStatus,JSON.stringify(data),this.addUIList);
+    this.addUIList=this.deleteRow(this.deleteList,this.dataSource.dataStatus,JSON.stringify(data),this.addUIList);
   }
 
 
@@ -90,13 +95,22 @@ export class SalarySpecialConfigComponent extends MyComponent implements OnInit 
    * 数据在add,update,delete后提交到数据库保存
    */
   saveUpdate(){
-      
-      const newArr = this.dataSource.dataStatus.myData.slice();
+    console.log('数组 ===>',this.addUIList,this.updateList,this.deleteList)
+    if(this.addUIList.length==0&&this.updateList.length==0&&this.deleteList.length==0){
+      this.msg.info("未发生任何改动！")
+    }else{
+      const newArr = JSON.parse(JSON.stringify(this.dataSource.dataStatus.tableData) )   ;
       const newSet = new Set();
       newArr.forEach(item=>{
         item.specialId=-1;
+        item.salaryName="null"
         newSet.add( JSON.stringify(item) );
       })
+      console.log('数组大小===>',newArr.length)
+      console.log('Set大小===>',newSet.size)
+    
+     
+      
       if(newArr.length!=newSet.size){
         this.warning();
       }else{
@@ -111,12 +125,13 @@ export class SalarySpecialConfigComponent extends MyComponent implements OnInit 
         })
 
       }
+    }
   }
 
   warning(): void {
     this.modalService.warning({
       nzTitle: '信息提示',
-      nzContent: '重复数据被插入，请检查!'
+      nzContent: '存在重复的数据，请检查!'
     });
   }
 

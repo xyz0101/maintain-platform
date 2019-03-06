@@ -12,8 +12,9 @@
      nzShowQuickJumper="true"
       nzTitle ="线与线领导"
       nzFrontPagination="true"
-      [(nzData)]="dataSource.dataStatus.myData"
-      nzPageSize="13"
+      [(nzData)]="dataSource.dataStatus.tableData"
+      [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize"
+      [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
     
      >
     <thead>
@@ -27,7 +28,7 @@
     </tr>
     </thead>
         <tr *ngFor="let data of editRowTable.data;let i = index">
-          <td>{{i+1}}</td>
+          <td>{{(i+1)+((dataSource.dataStatus.pageInfo.curPage-1)*dataSource.dataStatus.pageInfo.pageSize)  }}</td>
           <td> {{data.drCode}}     </td>
           <td> {{data.drName }}  </td>
           <td> <input nz-input  nzSize="default" (ngModelChange)="onChangeEmp($event)"  (change)="onChange(data)" [(ngModel)]="data.drMgr"  [nzAutocomplete]="auto"> 
@@ -93,8 +94,9 @@
      nzShowQuickJumper="true"
       nzTitle ="线与部门的关系"
       nzFrontPagination="true"
-      [(nzData)]="dataSource.dataStatus1.myData"
-      nzPageSize="13"
+      [(nzData)]="dataSource.dataStatus1.tableData"
+      [(nzPageSize)]="dataSource.dataStatus1.pageInfo.pageSize"
+      [(nzPageIndex)]="dataSource.dataStatus1.pageInfo.curPage"
     
      >
     <thead>
@@ -109,11 +111,11 @@
     </tr>
     </thead>
         <tr *ngFor="let data of baseTable.data;let i = index">
-          <td>{{i+1}}</td>
+          <td>{{(i+1)+((dataSource.dataStatus1.pageInfo.curPage-1)*dataSource.dataStatus1.pageInfo.pageSize)  }}</td>
           <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drCode" >  </td> -->
           <!-- <td> <input nz-input  nzSize="default"   (change)="onChange1()" [(ngModel)]="data.drName" >  </td> -->
          <td style="width:200px"> <nz-select (ngModelChange)="onChange1()" style="width:100%"[(ngModel)]="data.drCode"  nzAllowClear nzPlaceHolder="Choose">
-              <nz-option *ngFor="let sel of dataSource.dataStatus.myData" [nzValue]="sel.drCode"  [nzLabel]="sel.drName" [nzDisabled]="sel.isAdded==true?true:false"></nz-option>
+              <nz-option *ngFor="let sel of dataSource.dataStatus.tableData" [nzValue]="sel.drCode"  [nzLabel]="sel.drName" [nzDisabled]="sel.isAdded==true?true:false"></nz-option>
             </nz-select>
           </td>
           <td style="width:200px">  <nz-date-picker style="width:100%"  [(ngModel)]="data.bdate"  (ngModelChange)="onChange1()"  nzFormat="yyyy-MM-dd"></nz-date-picker></td> 
@@ -122,7 +124,7 @@
           <!-- <td>{{ data.edate | date:'yyyy/MM/dd'}}</td> -->
           <td>
           <nz-select style="width:100%"[(ngModel)]="data.orgCodeSecond" (ngModelChange)="onChange1()"  nzAllowClear nzPlaceHolder="请选择部门">
-              <nz-option *ngFor="let sel of dataSource.dataStatus2.myData" [nzValue]="sel.organizationCode" [nzLabel]="sel.organizationName"   ></nz-option>
+              <nz-option *ngFor="let sel of dataSource.dataStatus2.tableData" [nzValue]="sel.organizationCode" [nzLabel]="sel.organizationName"   ></nz-option>
             </nz-select>
             </td>
           <!-- <td>{{data.orgCodeSecond}}</td> -->

@@ -26,9 +26,9 @@ export class TargetService extends EvalServiceService{
    
 
 //本地开发模式
- public  baseEvalUrl= "http://127.0.0.1:8700/target";
+  public  baseEvalUrl= "http://127.0.0.1:8700/target";
 //测试环境
-//  public  baseEvalUrl= "http://172.16.134.98:8700/target";
+  // public  baseEvalUrl= "http://172.16.134.98:8700/target";
 //获取所有的时间节点
 private allDatePointUrl = this.baseEvalUrl+"/getAllDatePoint";
 //获取权限是否打开
@@ -37,6 +37,13 @@ private authIsOpenUrl = this.baseEvalUrl+"/getAuthIsOpen";
 private updateAllAuthUrl = this.baseEvalUrl+"/updateAllAuth";
 //修改时间节点
 private updateDatePointUrl = this.baseEvalUrl+"/updateDatePoint";
+//推送待办
+private  insertEvalVirtRecordUrl =this.baseEvalUrl + '/insertEvalVirtRecord'
+//删除待办
+private  deleteRocordProcessUrl  = this.baseEvalUrl + '/deleteRocordProcess' 
+//查询待办数据
+private getEndDateUrl = this.baseEvalUrl + '/getEndDate'
+
 
 // 获取evel信息
   private selectEvalInfoUrl =this.baseEvalUrl+'/queryEmpEvalData';
@@ -85,37 +92,35 @@ updateDatePoint(addValue:string,deleteValue:string,updateValue:string):Observabl
   return this.http.post(this.updateDatePointUrl, null , httpOptions );
 }
 
-// @ts-ignore
-  queryEvalInfo( year: string): Observable<Result[]> {
+   queryEvalInfo( year: string): Observable<Result[]> {
   const param = new HttpParams().set('year', year);
     const httpOptions = {
       headers: this.headers,
       params: param
     }
-    // @ts-ignore 标记后面不做类型检查
-    return this.http.get<Result[]>( this.selectEvalInfoUrl, httpOptions).pipe();
+     return this.http.get<Result[]>( this.selectEvalInfoUrl, httpOptions).pipe();
   }
 
-  // @ts-ignore
-  insertRecodeEval(par: string): Observable<result[]> {
+  
+  insertRecodeEval(par: string): Observable<Result[]> {
     const params = new HttpParams().set('param', par);
     const HttpOptions = {
       headers: this.headers,
       params: params
     }
-    // @ts-ignore
-    return this.http.post<Result[]>(this.baseEvalUrl + '/insertEvalVirtRecord', null, HttpOptions ).pipe();
+    
+    return this.http.post<Result[]>(this.insertEvalVirtRecordUrl , null, HttpOptions ).pipe();
   }
 
-  // @ts-ignore
+  
   deleteVirtRecord(key: string): Observable<Result[]> {
     const params = new HttpParams().set('param', key);
     const HttpOptions = {
       headers: this.headers,
       params: params
     };
-    // @ts-ignore
-    return this.http.post <Result[]>( this.baseEvalUrl + '/deleteRocordProcess', null, HttpOptions).pipe();
+    
+    return this.http.post <Result[]>(this.deleteRocordProcessUrl  , null, HttpOptions).pipe();
   }
 
   getTempVerEndDate(qN: string): Observable<Result[]> {
@@ -124,7 +129,7 @@ updateDatePoint(addValue:string,deleteValue:string,updateValue:string):Observabl
       headers: this.headers ,
       params: params
     }
-    // @ts-ignore
-    return this.http.post <Result[]>(this.baseEvalUrl + '/getEndDate', null, HttpOptions).pipe();
+    
+    return this.http.post <Result[]>(this.getEndDateUrl , null, HttpOptions).pipe();
   }
 }

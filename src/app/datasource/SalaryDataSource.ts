@@ -22,8 +22,8 @@ import {Observable} from 'rxjs';
             res.map(data=>{
                console.log(data) 
              
-                this.dataStatus.myData = data.data.listData;
-                this.dataStatus.myData.forEach(item=>{
+                this.dataStatus.tableData = data.data.listData;
+                this.dataStatus.tableData.forEach(item=>{
                      if(item.key!=null){
                         dataMap.get( item.key ).dateType=item.dateType=="true"
                         dataMap.get( item.key ).salaryDay=item.salaryDay=="true"
@@ -32,7 +32,7 @@ import {Observable} from 'rxjs';
                      }
                    
                   })
-                  console.log('数据=======》',    this.dataStatus.myData ) 
+                  console.log('数据=======》',    this.dataStatus.tableData ) 
                 this.dataStatus.loadingEvalSubject.next(false);
             })
 
@@ -54,7 +54,7 @@ import {Observable} from 'rxjs';
                         //判断是否有修改过的内容
                         var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
                         //存储数据
-                        this.dataStatus.myData=dataArray;
+                        this.dataStatus.tableData=dataArray;
                         this.dataStatus.pageDate=result.data;
                         this.dataStatus.anyData = [{label:'不发该项工资',value:'A'},{label:'试用期不降挡',value:'B'}];
                         //加载完毕

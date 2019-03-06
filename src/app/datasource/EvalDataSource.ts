@@ -33,7 +33,7 @@ export class EvalDataSource  {
                     result=>{
                         this.dataStatus.pageInfo=result.data.pageInfo;
                         this.dataStatus.evalMgrSubject.next(result.data.listData);
-                        this.dataStatus.myData=result.data.listData;
+                        this.dataStatus.tableData=result.data.listData;
                         console.log(result.data.listData);
                         this.dataStatus.length=result.data.listData.length;
                         this.dataStatus.loadingEvalSubject.next(false);
@@ -55,7 +55,7 @@ export class EvalDataSource  {
                         //判断是否有修改过的内容
                         var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
                         this.dataStatus.evalMgrSubject.next(dataArray);
-                        this.dataStatus.myData=dataArray;
+                        this.dataStatus.tableData=dataArray;
                         console.log("loadHrDeptRegion-----")
                         console.log(result.data.listData);
                         this.dataStatus.length=result.data.listData.length;
@@ -73,7 +73,7 @@ export class EvalDataSource  {
     loadOgrList(searchValue:string){
         this.evalService.getOrgList(searchValue).subscribe(res=>{
             res.map(result=>{
-                this.dataStatus2.myData=result.data.listData;
+                this.dataStatus2.tableData=result.data.listData;
             })
         })
     }
@@ -91,7 +91,7 @@ export class EvalDataSource  {
                         //判断是否有修改过的内容
                         var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
                         this.dataStatus1.evalMgrSubject.next(dataArray);
-                        this.dataStatus1.myData=dataArray;
+                        this.dataStatus1.tableData=dataArray;
                         console.log("getHrDeptRegionDtl-----加载数据")
                         console.log(result.data.listData);
                         this.dataStatus1.length=result.data.listData.length;
@@ -135,7 +135,7 @@ export class EvalDataSource  {
                          })
                         //判断是否有修改过的内容
                         var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
-                        this.dataStatus.myData=dataArray;
+                        this.dataStatus.tableData=dataArray;
                         this.dataStatus. evalMgrSubject.next(dataArray );
                         this.dataStatus. length=result.data.listData.length;
                         this.dataStatus. loadingEvalSubject.next(false);
@@ -160,7 +160,7 @@ export class EvalDataSource  {
                         //判断是否有修改过的内容
                         var dataArray =  this.checkUpdate(updateMap,curList,result.data.listData);
                         //存储数据
-                        this.dataStatus.myData=dataArray;
+                        this.dataStatus.tableData=dataArray;
                         this.dataStatus.pageDate=result.data
                         this.dataStatus. evalMgrSubject.next(dataArray );
                         //加载完毕
@@ -179,7 +179,7 @@ export class EvalDataSource  {
         this.dataStatus.loadingEvalSubject.next(true)
         this.evalService.getEvalEmployeeInfos(searchValue,curPage).subscribe(res=>{
             res.map(result=>{
-                this.dataStatus.myData= result.data.listData;
+                this.dataStatus.tableData= result.data.listData;
                 this.dataStatus.pageDate =result.data;
                 this.dataStatus.pageInfo = result.data.pageInfo;
                 this.dataStatus.loadingEvalSubject.next(false)
@@ -192,7 +192,7 @@ export class EvalDataSource  {
         this.evalService.getOrgLeaderList().subscribe(
             res=>{
                 res.map(result=>{
-                    this.dataStatus.myData= this.checkUpdate(updateMap,curList,result.data.listData)  ;
+                    this.dataStatus.tableData= this.checkUpdate(updateMap,curList,result.data.listData)  ;
                     this.dataStatus.loadingEvalSubject.next(false)
                 }) 
             })

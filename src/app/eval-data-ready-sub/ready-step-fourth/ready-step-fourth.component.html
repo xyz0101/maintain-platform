@@ -49,9 +49,12 @@
       <button *ngIf="showRefresh"   [nzType]="'primary'"   nz-button  nz-popconfirm style="margin-bottom:5px"  >刷新数据</button>
       </nz-popconfirm>
       <nz-progress  *ngIf="showProcess" [(nzPercent)]="processRate"></nz-progress>
-    <nz-table #ajaxTable nzBordered nzSize="small" nzNoResult="无数据，请选择正确的时间节点刷新数据并点击搜索按钮" nzShowQuickJumper="true" nzTitle="年度评价人员信息表" [nzFrontPagination]="false"
-      [(nzData)]="dataSource.dataStatus.myData" [nzLoading]="dataSource.dataStatus.loading$ | async" [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
-      [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage" [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize" 
+    <nz-table #ajaxTable nzBordered nzSize="small" nzNoResult="无数据，请选择正确的时间节点刷新数据并点击搜索按钮" 
+    nzShowQuickJumper="true" nzTitle="年度评价人员信息表" [nzFrontPagination]="false"
+      [(nzData)]="dataSource.dataStatus.tableData" [nzLoading]="dataSource.dataStatus.loading$ | async" 
+       [nzTotal]="dataSource.dataStatus.pageInfo.totalNum"
+       [(nzPageSize)]="dataSource.dataStatus.pageInfo.pageSize"
+       [(nzPageIndex)]="dataSource.dataStatus.pageInfo.curPage"
       (nzPageIndexChange)="loadEvalByPage(dataSource.dataStatus.pageInfo.curPage+'')">
       <thead (nzSortChange)="sort($event)" nzSingleSort>
         <tr>
@@ -64,8 +67,8 @@
            
         </tr>
       </thead>
-      <tr *ngFor="let data of dataSource.dataStatus.myData;let i = index">
-        <td>{{i+1}}</td>
+      <tr *ngFor="let data of dataSource.dataStatus.tableData;let i = index">
+        <td>{{(i+1)+((dataSource.dataStatus.pageInfo.curPage-1)*dataSource.dataStatus.pageInfo.pageSize)  }}</td>
         <td>{{data.dataDate| date:'yyyy/MM/dd'}}</td>
         <td> {{data.employeeCode}} </td>
         <td>{{data.employeeName}}</td>

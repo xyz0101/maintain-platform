@@ -19,7 +19,7 @@
  nzShowQuickJumper="true"
  nzTitle ="自评时间节点"
  nzFrontPagination="true"
- [(nzData)]="dataSource.dataStatus.myData"
+ [(nzData)]="dataSource.dataStatus.tableData"
  nzPageSize="13"
 
 >
@@ -34,7 +34,7 @@
 </tr>
 </thead>
    <tr *ngFor="let data of baseTable.data;let i = index">
-     <td>{{i+1}}</td>
+     <td>{{(i+1)+((dataSource.dataStatus.pageInfo.curPage-1)*dataSource.dataStatus.pageInfo.pageSize)  }}</td>
      <td>{{data.typeName}}</td>
      <td>{{data.quarterNumber}}</td>
      <td style="width:300px">  <nz-date-picker [nzDisabled]="dataSource.dataStatus1.anyData" style="width:100%"  [(ngModel)]="data.startDate"  (ngModelChange)="onChange()"  nzFormat="yyyy-MM-dd"></nz-date-picker></td> 

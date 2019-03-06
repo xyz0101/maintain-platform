@@ -79,7 +79,7 @@ public showSearch = true;
  * 改变行
  */
   onChange1(){
-    console.log(this.dataSource.dataStatus1.myData)
+    console.log(this.dataSource.dataStatus1.tableData)
     console.log("改变")
     this.updateList1=  this.changeStatu(this.curList1,this.updateMap1,this.updateList1,this.dataSource.dataStatus1)
     }
@@ -97,7 +97,7 @@ public showSearch = true;
     region.isAdded=true;
    
     this.addUIRow(this.addUIList,this.dataSource.dataStatus, JSON.parse(JSON.stringify(region)));
-   // console.log(this.dataSource.dataStatus.myData)
+   // console.log(this.dataSource.dataStatus.tableData)
   }
   /**
    * 删除行
@@ -122,7 +122,7 @@ public showSearch = true;
       
      
       this.addUIRow(this.addUIList1,this.dataSource.dataStatus1, JSON.parse(JSON.stringify(regionDtl)));
-     // console.log(this.dataSource.dataStatus.myData)
+     // console.log(this.dataSource.dataStatus.tableData)
     }
     /**
      * 删除行
@@ -138,7 +138,7 @@ public showSearch = true;
   getNewDrCode():string{
     var tempCode=0;
     if(this.addUIList.length==0){
-      this.dataSource.dataStatus.myData.forEach(item=>{
+      this.dataSource.dataStatus.tableData.forEach(item=>{
         var code = new String( item.drCode).substr(4, item.drCode.length);
         var codeNum = Number.parseInt(code);
         if(codeNum>=tempCode){
@@ -223,7 +223,7 @@ saveDeptRegionDtl(){
     item.bdate = this.datePipe.transform(item.bdate , 'yyyy-MM-dd')
     item.edate = this.datePipe.transform(item.edate , 'yyyy-MM-dd')
     item.creationDate = this.datePipe.transform(item.creationDate , 'yyyy-MM-dd HH:mm:ss')
-    this.dataSource.dataStatus2.myData.forEach(item1=>{
+    this.dataSource.dataStatus2.tableData.forEach(item1=>{
       if(item1.organizationCode == item.orgCodeSecond){
         console.log("添加部门名称===>"+item1.organizationName)
         item.orgNameSecond = item1.organizationName;
@@ -235,7 +235,7 @@ saveDeptRegionDtl(){
   this.updateList1.forEach(item=>{
     item.bdate = this.datePipe.transform(item.bdate , 'yyyy-MM-dd')
     item.edate = this.datePipe.transform(item.edate , 'yyyy-MM-dd')
-    this.dataSource.dataStatus2.myData.forEach(item1=>{
+    this.dataSource.dataStatus2.tableData.forEach(item1=>{
       if(item1.organizationCode == item.orgCodeSecond){
         item.orgNameSecond = item1.organizationName;
       }

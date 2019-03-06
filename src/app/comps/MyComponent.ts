@@ -53,7 +53,10 @@ export abstract class MyComponent implements    OnInit {
  public updateCurPage=1;
  //数据源1
  public dataSource: EvalDataSource;
-
+//分页大小
+public pageSize=13;
+//当前页码
+public pageIndex=1;
  //搜索的字段
  public  searchFields  =new Map();
  //构造搜索表单
@@ -237,18 +240,18 @@ initTable(dataSource: EvalDataSource) {
     //需要添加延迟，在使用ngModelChange的时候变化时发生在改变数据的同时，在执行这里的饿时候数据还没有变化，所以要等待数据变化之后在比较
     window.setTimeout(() => {
     // console.log(curList)
-    // console.log(dataStatus.myData )
+    // console.log(dataStatus.tableData )
     //遍历原始表
      for(var i=0;i<curList.length;i++){
        var key=   JSON.stringify (curList[i]);
       //  console.log("key====》",curList[i])
-      //  console.log("value====》", dataStatus.myData[i] )
-         if(key!=   JSON.stringify (dataStatus.myData[i])){
-           if(dataStatus.myData[i]!=undefined){
+      //  console.log("value====》", dataStatus.tableData[i] )
+         if(key!=   JSON.stringify (dataStatus.tableData[i])){
+           if(dataStatus.tableData[i]!=undefined){
             //   console.log("发生了变化")
             //  console.log("key====》"+key)
-            //  console.log("value====》"+JSON.stringify (dataStatus.myData[i]))
-             updateMap.set(key,dataStatus.myData[i]);
+            //  console.log("value====》"+JSON.stringify (dataStatus.tableData[i]))
+             updateMap.set(key,dataStatus.tableData[i]);
            }
            
          }else{
@@ -314,14 +317,28 @@ initTable(dataSource: EvalDataSource) {
 addUIRow(addUIList:Array<any>,dataStatus: DataStatus,row: any){
   let i=0;
   var tempList = []
-  for(;i<dataStatus.myData.length;i++){
-    tempList[i]= dataStatus.myData[i];
+  for(;i<dataStatus.tableData.length;i++){
+    tempList[i]= dataStatus.tableData[i];
   }
   tempList[i]=row;
-  dataStatus.myData=tempList;
+  dataStatus.tableData=tempList;
   addUIList.push(row);
   console.log("添加行")
   console.log(addUIList)
+  this.jumpPageToLast(dataStatus)
+}
+/**
+ * 跳转到最后一行
+ * @param dataStatus 
+ */
+jumpPageToLast(dataStatus){
+ //跳转到最后一页
+ var calIndex = (Math.floor( (dataStatus.tableData.length/dataStatus.pageInfo.pageSize)))
+
+ dataStatus.pageInfo.curPage = (dataStatus.tableData.length% dataStatus.pageInfo.pageSize)>0?calIndex+1:calIndex;
+
+ console.log('当前页码',dataStatus.pageInfo.curPage)
+ console.log('总长度==',dataStatus.tableData.length,'分页大小==',dataStatus.pageInfo.pageSize)
 }
 /**
  * 删除行
@@ -331,7 +348,7 @@ addUIRow(addUIList:Array<any>,dataStatus: DataStatus,row: any){
  * @param addList 
  */
 deleteRow(deleteList:Array<any> , dataStatus: DataStatus,row: any,addList:Array<any>):any[]{
-  dataStatus.myData=dataStatus.myData.filter(item=> {
+  dataStatus.tableData=dataStatus.tableData.filter(item=> {
     new Date( item.creationDate) 
     
     return JSON.stringify(item)!=row

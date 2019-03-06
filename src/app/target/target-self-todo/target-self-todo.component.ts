@@ -18,7 +18,7 @@ export class TargetSelfTodoComponent extends MyComponent {
   public dataSource :TargetDataSource;
   private employeeName: string;
   private employeeCode: string;
-  private tableSource: Object;
+  private tableSource= [];
   private flag: boolean;
   // 注入路由信息,以及评价的服务
   constructor( public routerInfo: ActivatedRoute , public targetService: TargetService , public fb: FormBuilder,
@@ -46,17 +46,17 @@ export class TargetSelfTodoComponent extends MyComponent {
   }
 
   refreshStatus(): void {
-      // @ts-ignore
-    const allChecked = this.dataSource.dataStatus.anyData.every(value => value.checked === true);
-    // @ts-ignore
-    const allUnChecked = this.dataSource.dataStatus.anyData.every(value => !value.checked);
+      
+    const allChecked = this.dataSource.dataStatus. tableData.every(value => value.checked === true);
+    
+    const allUnChecked = this.dataSource.dataStatus. tableData.every(value => !value.checked);
     this.allChecked = allChecked;
     this.indeterminate = (!allChecked) && (!allUnChecked);
   }
 
   checkAll(value: boolean): void {
-    // @ts-ignore
-    this.dataSource.dataStatus.anyData.forEach(data => {
+    
+    this.dataSource.dataStatus. tableData.forEach(data => {
       if ( null != data.q1t && null != data.q2t && null != data.q3t && null != data.q4t) {
       } else {
         data.checked = value;
@@ -67,9 +67,9 @@ export class TargetSelfTodoComponent extends MyComponent {
 
   loadData() {
     // 加载表格数据 ，使用前端分页就好
-    // @ts-ignore
+    
     this.dataSource.loadTodoList(this.year);
-    // @ts-ignore
+    
     // TODO
 
   }
@@ -92,11 +92,11 @@ export class TargetSelfTodoComponent extends MyComponent {
    */
   selectTest(label: string) {
     const params = new Array();
-    // @ts-ignore
+    
     this.dataSource.getEnddate(label.substring(2)).subscribe (datas => {
       // ******
-        // @ts-ignore
-      this.dataSource.dataStatus.anyData.forEach(data => {
+        
+      this.dataSource.dataStatus. tableData.forEach(data => {
       if (data.checked ) {
         if (label.substring(2) == '1' || label.substring(2) == '3' && data.tarTemplate == '2') {
 
@@ -118,7 +118,7 @@ export class TargetSelfTodoComponent extends MyComponent {
       this.warning();
       return;
     }
-       // @ts-ignore
+     
        this.dataSource.insertBpmVirtRecord(JSON.stringify(params)).subscribe(data => {
       if ( data > 0) {
         this.success();
@@ -134,14 +134,14 @@ export class TargetSelfTodoComponent extends MyComponent {
    */
   deleteTest(code: string) {
     const param = new Array() ;
-      // @ts-ignore
-    this.dataSource.dataStatus.anyData.forEach(data => {
+      
+    this.dataSource.dataStatus. tableData.forEach(data => {
       if (data.checked) {
         const parr = [data.instanceid1, data.instanceid2, data.instanceid3, data.instanceid4];
         const entrys = new TempEntity();
         entrys.setEmployeeCode(data.employeeCode);
         entrys.setCode(this.year + '年第' + code.substring(0, 1) + '季度自评');
-        // @ts-ignore
+        
         param.push(entrys);
       }
     });
@@ -179,7 +179,7 @@ export class TargetSelfTodoComponent extends MyComponent {
       nzTitle  : '<i>删除确认</i>',
       nzContent: '<b>你确认要删除所选待办?</b>',
       nzOnOk   : () => {
-        // @ts-ignore
+        
         this.dataSource.deleteVirtRecord(JSON.stringify(param)).subscribe(data => {
           if ( data > 0) {
             this.delete();
@@ -197,13 +197,13 @@ export class TargetSelfTodoComponent extends MyComponent {
   // query，按条件检索
   selectByCondition(): string {
     if ( !this.flag) {
-      this.tableSource = this.dataSource.dataStatus.anyData;
+      this.tableSource = this.dataSource.dataStatus. tableData;
       this.flag = true ;
     } else {
-      this.dataSource.dataStatus.anyData = this.tableSource;
+      this.dataSource.dataStatus.tableData = this.tableSource;
     }
-      // @ts-ignore
-     this.dataSource.dataStatus.anyData = this.dataSource.dataStatus.anyData.filter( item => {
+      
+     this.dataSource.dataStatus. tableData = this.dataSource.dataStatus. tableData.filter( item => {
 
       if(this.employeeName != ''&&this.employeeCode!= ''&&this.employeeCode!=null&&this.employeeName!=null){
         if ((item.employeeName.indexOf(this.employeeName) > -1) && (item.employeeCode .indexOf( this.employeeCode) > -1)){
